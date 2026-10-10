@@ -12,7 +12,7 @@ for (const id of added) {
     if (analog.includes(id)) {
       expect(await page.locator('[data-hand="hour"]').evaluate(hand => (hand as SVGGraphicsElement).transform.baseVal.getItem(0).angle)).toBeCloseTo(282 + 8 / 120, 3);
       await expect(page.locator('[data-hand="second"]')).toHaveAttribute('transform', 'rotate(48 120 120)');
-      await expect(page.locator('#format')).toBeHidden();
+      await expect(page.locator('#format')).toBeVisible();
     } else if (id === 'aura') {
       await expect(page.locator('[data-face-time]')).toHaveText('09:24:08');
       await page.locator('#language').selectOption('en-US');

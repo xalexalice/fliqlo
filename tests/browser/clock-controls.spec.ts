@@ -100,6 +100,7 @@ test('all languages fit on small screens', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   for (const id of catalogue.filter(clock => clock.offline).map(clock => clock.id)) {
     await page.goto(pathToFileURL(resolve(`dist/standalone/${id}.html`)).href);
+    await page.locator('#format').click();
     for (const [locale] of locales) {
       await page.locator('#language').selectOption(locale);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

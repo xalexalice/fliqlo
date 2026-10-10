@@ -2,6 +2,7 @@
   "zh-CN": {
     "label": "简体中文", "language": "语言", "settings": "时钟设置",
     "format24": "24 小时", "format12": "12 小时", "secondsOn": "显示秒：开", "secondsOff": "显示秒：关",
+    "ampmOn": "AM/PM：显示", "ampmOff": "AM/PM：隐藏",
     "wakeOn": "屏幕常亮：开", "wakeOff": "屏幕常亮：关", "wakeUnavailable": "常亮暂不可用",
     "fullscreen": "全屏", "exitFullscreen": "退出全屏",
     "storageError": "设置仅在本次打开期间生效。", "fullscreenError": "浏览器未允许全屏，可使用浏览器的全屏菜单。", "wakeError": "当前环境未允许屏幕常亮。",
@@ -11,6 +12,7 @@
   "en-US": {
     "label": "English", "language": "Language", "settings": "Clock settings",
     "format24": "24-hour", "format12": "12-hour", "secondsOn": "Seconds: on", "secondsOff": "Seconds: off",
+    "ampmOn": "AM/PM: show", "ampmOff": "AM/PM: hide",
     "wakeOn": "Keep awake: on", "wakeOff": "Keep awake: off", "wakeUnavailable": "Keep awake unavailable",
     "fullscreen": "Fullscreen", "exitFullscreen": "Exit fullscreen",
     "storageError": "Settings apply only until this page is closed.", "fullscreenError": "Fullscreen was blocked. Try your browser’s fullscreen menu.", "wakeError": "Keeping the screen awake is unavailable here.",
@@ -20,6 +22,7 @@
   "ja-JP": {
     "label": "日本語", "language": "言語", "settings": "時計の設定",
     "format24": "24時間表示", "format12": "12時間表示", "secondsOn": "秒表示：オン", "secondsOff": "秒表示：オフ",
+    "ampmOn": "AM/PM：表示", "ampmOff": "AM/PM：非表示",
     "wakeOn": "画面点灯：オン", "wakeOff": "画面点灯：オフ", "wakeUnavailable": "画面点灯は利用不可",
     "fullscreen": "全画面", "exitFullscreen": "全画面を終了",
     "storageError": "設定はこのページを閉じるまで有効です。", "fullscreenError": "全画面表示が許可されませんでした。ブラウザーの全画面メニューをお試しください。", "wakeError": "この環境では画面の点灯を維持できません。",
@@ -29,6 +32,7 @@
   "ko-KR": {
     "label": "한국어", "language": "언어", "settings": "시계 설정",
     "format24": "24시간", "format12": "12시간", "secondsOn": "초 표시: 켜짐", "secondsOff": "초 표시: 꺼짐",
+    "ampmOn": "AM/PM: 표시", "ampmOff": "AM/PM: 숨김",
     "wakeOn": "화면 유지: 켜짐", "wakeOff": "화면 유지: 꺼짐", "wakeUnavailable": "화면 유지 사용 불가",
     "fullscreen": "전체 화면", "exitFullscreen": "전체 화면 종료",
     "storageError": "설정은 이 페이지를 닫을 때까지 적용됩니다.", "fullscreenError": "전체 화면이 차단되었습니다. 브라우저의 전체 화면 메뉴를 사용해 보세요.", "wakeError": "이 환경에서는 화면을 켜 둔 상태로 유지할 수 없습니다.",
@@ -38,6 +42,7 @@
   "fr-FR": {
     "label": "Français", "language": "Langue", "settings": "Réglages de l’horloge",
     "format24": "24 heures", "format12": "12 heures", "secondsOn": "Secondes : oui", "secondsOff": "Secondes : non",
+    "ampmOn": "AM/PM : afficher", "ampmOff": "AM/PM : masquer",
     "wakeOn": "Écran allumé : oui", "wakeOff": "Écran allumé : non", "wakeUnavailable": "Maintien de l’écran indisponible",
     "fullscreen": "Plein écran", "exitFullscreen": "Quitter le plein écran",
     "storageError": "Les réglages restent actifs jusqu’à la fermeture de cette page.", "fullscreenError": "Le plein écran a été bloqué. Essayez le menu plein écran du navigateur.", "wakeError": "Le maintien de l’écran allumé n’est pas disponible ici.",
@@ -47,6 +52,7 @@
   "de-DE": {
     "label": "Deutsch", "language": "Sprache", "settings": "Uhreinstellungen",
     "format24": "24 Stunden", "format12": "12 Stunden", "secondsOn": "Sekunden: an", "secondsOff": "Sekunden: aus",
+    "ampmOn": "AM/PM: anzeigen", "ampmOff": "AM/PM: verbergen",
     "wakeOn": "Bildschirm an: ein", "wakeOff": "Bildschirm an: aus", "wakeUnavailable": "Bildschirmaktivierung nicht verfügbar",
     "fullscreen": "Vollbild", "exitFullscreen": "Vollbild beenden",
     "storageError": "Die Einstellungen gelten bis zum Schließen dieser Seite.", "fullscreenError": "Vollbild wurde blockiert. Versuchen Sie das Vollbildmenü Ihres Browsers.", "wakeError": "Der Bildschirm kann hier nicht dauerhaft eingeschaltet bleiben.",
@@ -56,6 +62,7 @@
   "es-ES": {
     "label": "Español", "language": "Idioma", "settings": "Ajustes del reloj",
     "format24": "24 horas", "format12": "12 horas", "secondsOn": "Segundos: sí", "secondsOff": "Segundos: no",
+    "ampmOn": "AM/PM: mostrar", "ampmOff": "AM/PM: ocultar",
     "wakeOn": "Pantalla activa: sí", "wakeOff": "Pantalla activa: no", "wakeUnavailable": "Pantalla activa no disponible",
     "fullscreen": "Pantalla completa", "exitFullscreen": "Salir de pantalla completa",
     "storageError": "Los ajustes se aplican hasta que se cierre esta página.", "fullscreenError": "La pantalla completa se ha bloqueado. Pruebe el menú de pantalla completa del navegador.", "wakeError": "No se puede mantener la pantalla encendida en este entorno.",

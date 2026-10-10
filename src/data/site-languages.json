@@ -153,7 +153,7 @@
     "clock.description.aura": "紫色渐变数字与玻璃卡片，适配 Aura Clock，内嵌 Space Mono 字体，支持离线。",
     "clock.description.rolling": "蓝紫渐变底与纵向滚动数字，适配 Animated Clock，内嵌 Victor Mono 字体，支持减少动态效果。",
     "clock.description.bubble": "大号圆润叠色数字，适配 Tiqlo Bubble。已转换为 HTML，内嵌 Fredoka 字体，横竖屏自适应。",
-    "clock.description.nixie": "六根琥珀辉光管横向展示时、分、秒。玻璃反光与金属底座带来温暖的复古氛围，日期独立显示。"
+    "clock.description.nixie": "六根琥珀辉光管嵌入黄铜机箱，横向显示时、分、秒。缓缓转动的齿轮、铜管、压力表与轻盈蒸汽，组成一台复古时间机器。"
   },
   "en-US": {
     "meta.home": "Still — Let time slow down.",
@@ -309,7 +309,7 @@
     "clock.description.aura": "Purple gradient digits on a glass card. Adapted from Aura Clock with embedded Space Mono for offline use.",
     "clock.description.rolling": "Vertical rolling digits on a blue-purple background. Adapted from Animated Clock with embedded Victor Mono; respects reduced motion.",
     "clock.description.bubble": "Large overlapping colourful digits. Adapted from Tiqlo Bubble to HTML with embedded Fredoka and responsive portrait and landscape layouts.",
-    "clock.description.nixie": "Six amber tubes display hours, minutes and seconds in one row. Glass reflections and metal bases create a warm, vintage atmosphere, with the date shown separately."
+    "clock.description.nixie": "Six amber tubes sit in a brass case, displaying hours, minutes and seconds in one row. Slowly turning gears, copper pipes, a pressure gauge and drifting steam form a vintage time machine."
   },
   "ja-JP": {
     "meta.home": "Still — 時間を、ゆっくり。",
@@ -465,7 +465,7 @@
     "clock.description.aura": "紫のグラデーション数字とガラスカード。Aura Clock を移植し、Space Mono を内蔵。",
     "clock.description.rolling": "青紫の背景と縦にスクロールする数字。Animated Clock を移植し、Victor Mono を内蔵。動きを減らす設定に対応。",
     "clock.description.bubble": "大きな丸い数字の重なり。Tiqlo Bubble を HTML に移植。Fredoka 内蔵、縦横画面に対応。",
-    "clock.description.nixie": "6本の琥珀色の管が時・分・秒を横一列に表示。ガラスの反射と金属の台座が温かいレトロな雰囲気を生み、日付は別に表示します。"
+    "clock.description.nixie": "真鍮ケースに収めた6本の琥珀色の管が、時・分・秒を横一列に表示。ゆっくり回る歯車、銅管、圧力計、漂う蒸気がレトロな時間の機械を描きます。"
   },
   "ko-KR": {
     "meta.home": "Still — 시간을 천천히.",
@@ -621,7 +621,7 @@
     "clock.description.aura": "보라색 그라데이션 숫자와 유리 카드. Aura Clock을 변환하고 Space Mono를 내장했습니다.",
     "clock.description.rolling": "청보라색 배경과 세로로 움직이는 숫자. Animated Clock을 변환하고 Victor Mono를 내장했습니다. 동작 줄이기를 지원합니다.",
     "clock.description.bubble": "크고 둥근 컬러 숫자가 겹치는 디자인. Tiqlo Bubble을 HTML로 변환하고 Fredoka를 내장했습니다. 가로·세로 화면에 맞춥니다.",
-    "clock.description.nixie": "여섯 개의 호박색 관이 시·분·초를 한 줄로 표시합니다. 유리의 반사와 금속 받침이 따뜻한 빈티지 분위기를 만들며 날짜는 따로 표시됩니다."
+    "clock.description.nixie": "황동 케이스 속 여섯 개의 호박색 관이 시·분·초를 한 줄로 표시합니다. 천천히 도는 톱니바퀴, 구리관, 압력계와 피어오르는 증기가 빈티지 시간 기계를 완성합니다."
   },
   "fr-FR": {
     "meta.home": "Still — Laissez le temps ralentir.",
@@ -777,7 +777,7 @@
     "clock.description.aura": "Chiffres violets en dégradé sur une carte de verre. Adaptation d’Aura Clock avec Space Mono intégrée.",
     "clock.description.rolling": "Chiffres à défilement vertical sur fond bleu-violet. Adaptation d’Animated Clock avec Victor Mono intégrée et réduction des animations.",
     "clock.description.bubble": "Grands chiffres ronds aux couleurs superposées. Adaptation HTML de Tiqlo Bubble, avec Fredoka intégrée et affichage portrait ou paysage.",
-    "clock.description.nixie": "Six tubes ambrés affichent heures, minutes et secondes sur une ligne. Reflets de verre et socles métalliques créent une atmosphère chaleureuse et rétro, avec une date séparée."
+    "clock.description.nixie": "Six tubes ambrés dans un boîtier en laiton affichent heures, minutes et secondes sur une ligne. Engrenages lents, tuyaux de cuivre, manomètre et vapeur légère composent une machine à remonter le temps."
   },
   "de-DE": {
     "meta.home": "Still — Lass die Zeit ruhiger werden.",
@@ -933,7 +933,7 @@
     "clock.description.aura": "Violette Farbverlaufsziffern auf einer Glaskarte. Adaption von Aura Clock mit eingebetteter Space Mono.",
     "clock.description.rolling": "Vertikal rollende Ziffern auf blauviolettem Hintergrund. Adaption von Animated Clock mit eingebetteter Victor Mono; berücksichtigt reduzierte Bewegung.",
     "clock.description.bubble": "Große runde Ziffern mit überlappenden Farben. HTML-Adaption von Tiqlo Bubble mit eingebetteter Fredoka für Hoch- und Querformat.",
-    "clock.description.nixie": "Sechs bernsteinfarbene Röhren zeigen Stunden, Minuten und Sekunden in einer Reihe. Glasreflexe und Metallsockel schaffen eine warme, nostalgische Atmosphäre. Das Datum steht separat."
+    "clock.description.nixie": "Sechs bernsteinfarbene Röhren zeigen Stunden, Minuten und Sekunden in einem Messinggehäuse. Langsam drehende Zahnräder, Kupferrohre, ein Druckmesser und leichter Dampf ergeben eine nostalgische Zeitmaschine."
   },
   "es-ES": {
     "meta.home": "Still — Deja que el tiempo se calme.",
@@ -1089,6 +1089,6 @@
     "clock.description.aura": "Dígitos violetas degradados sobre una tarjeta de cristal. Adaptación de Aura Clock con Space Mono integrada.",
     "clock.description.rolling": "Dígitos de desplazamiento vertical sobre fondo azul violeta. Adaptación de Animated Clock con Victor Mono integrada; respeta el movimiento reducido.",
     "clock.description.bubble": "Grandes dígitos redondos con colores superpuestos. Adaptación HTML de Tiqlo Bubble, con Fredoka integrada y diseño vertical y horizontal.",
-    "clock.description.nixie": "Seis tubos de ámbar muestran horas, minutos y segundos en una fila. Los reflejos del cristal y las bases metálicas crean un ambiente cálido y retro, con la fecha por separado."
+    "clock.description.nixie": "Seis tubos de ámbar en una caja de latón muestran horas, minutos y segundos en una fila. Engranajes lentos, tuberías de cobre, un manómetro y vapor suave forman una máquina del tiempo vintage."
   }
 }

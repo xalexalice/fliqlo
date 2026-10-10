@@ -1,6 +1,6 @@
 import type { timeParts } from '../lib/time.mjs';
 
-export function renderClockFace(display: HTMLElement, id: string, now: Date, part: ReturnType<typeof timeParts>, seconds: boolean, language: string, twentyFour: boolean) {
+export function renderClockFace(display: HTMLElement, id: string, now: Date, part: ReturnType<typeof timeParts>, seconds: boolean, language: string, twentyFour: boolean, showAmPm: boolean) {
   const hands = display.querySelectorAll<SVGElement>('[data-hand]');
   if (hands.length) {
     const angles = { hour: part.hourAngle, minute: part.minuteAngle, second: part.secondAngle };
@@ -18,7 +18,7 @@ export function renderClockFace(display: HTMLElement, id: string, now: Date, par
   }
   if (id === 'aura') {
     display.querySelector('[data-face-time]')!.textContent = `${part.hours}:${part.minutes}${seconds ? `:${part.seconds}` : ''}`;
-    display.querySelector('[data-face-period]')!.textContent = twentyFour ? '' : part.period;
+    display.querySelector('[data-face-period]')!.textContent = twentyFour || !showAmPm ? '' : part.period;
     display.querySelector('[data-face-weekday]')!.textContent = new Intl.DateTimeFormat(language, { weekday: 'long' }).format(now);
     display.querySelector('[data-face-date]')!.textContent = new Intl.DateTimeFormat(language, { year: 'numeric', month: 'long', day: 'numeric' }).format(now);
     return true;

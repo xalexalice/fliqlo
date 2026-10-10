@@ -1,4 +1,52 @@
 /* Horizontal adaptation of K Rajtilak's MIT clock; licenses/nixie-MIT.txt. DSEG7 is OFL licensed. */
+.nixie-machine {
+  --nixie-brass: #bc9259;
+  position: relative;
+  width: 100%;
+  max-width: 7em;
+  margin-inline: auto;
+  padding: .35em .12em .25em;
+  font-size: min(16cqw, 16svh, 170px);
+  isolation: isolate;
+}
+.nixie-housing {
+  position: relative;
+  padding: .2em .3em .08em;
+  border: .025em solid #9d7543;
+  border-radius: .11em;
+  background: repeating-linear-gradient(0deg, #ffe6bf04 0 1px, #0000 1px 3px), linear-gradient(120deg, #65513a, #211f1b 28%, #151815 70%, #59422c);
+  box-shadow: inset 0 0 0 .025em #171714, inset 0 0 0 .04em #ba915841, inset 0 .035em .05em #edd5ad33, 0 .14em .25em #0009;
+}
+.nixie-screw { position: absolute; width: .07em; height: .07em; border-radius: 50%; background: linear-gradient(45deg, #b49263 43%, #2b2319 44% 56%, #ba9869 57%); box-shadow: 0 0 .025em #000; }
+.screw-tl { top: .065em; left: .065em; }.screw-tr { top: .065em; right: .065em; }.screw-bl { bottom: .065em; left: .065em; }.screw-br { bottom: .065em; right: .065em; }
+.nixie-chimney { position: absolute; top: .08em; width: .13em; height: .45em; border: 1px solid #b4865555; border-radius: .04em .04em 0 0; background: linear-gradient(90deg, #4b2e1c, #c69a6e 35%, #855335 65%, #2b2118); z-index: -1; }
+.nixie-chimney::before { content: ''; position: absolute; top: -.03em; left: -.03em; right: -.03em; height: .06em; border-radius: .02em; background: linear-gradient(#c3a77d, #523c28); box-shadow: 0 0 .04em #000; }
+.chimney-left { left: 8%; }.chimney-right { right: 8%; }
+.nixie-steam { position: absolute; top: -.28em; width: .5em; height: .55em; pointer-events: none; }
+.steam-left { left: calc(8% - .18em); }.steam-right { right: calc(8% - .18em); }
+.nixie-steam i { position: absolute; bottom: 0; left: 20%; width: 65%; height: 85%; border-radius: 50%; background: radial-gradient(ellipse at 50% 75%, #e4e6d7aa, #b9c2b550 40%, #fff0 72%); filter: blur(.015em); opacity: 0; animation: nixie-steam-rise 5s ease-out infinite; }
+.nixie-steam i:nth-child(2) { animation-delay: -1.7s; }.nixie-steam i:nth-child(3) { animation-delay: -3.4s; }.steam-right i { animation-direction: normal; animation-delay: -2.5s; }
+.nixie-mechanism { display: flex; align-items: center; justify-content: space-between; height: .7em; padding: .09em .15em .01em; margin-top: .1em; border-top: 1px solid #c19a6040; }
+.nixie-gear-window { width: 1.35em; height: .62em; overflow: hidden; border: .012em solid #b9935866; border-radius: .07em; background: #0c100f; box-shadow: inset 0 0 .08em #000; }
+.nixie-gear-window svg { display: block; width: 100%; height: 100%; fill: #9a7847; stroke: #d3b174; stroke-width: 1; }
+.nixie-gear { transform-box: fill-box; transform-origin: center; animation: nixie-gear-turn 48s linear infinite; }
+.gear-reverse { animation-direction: reverse; animation-duration: 38s; }
+.nixie-gear:nth-child(3) { animation-duration: 31s; }
+.gear-well { fill: #201f19; stroke: #665433; }.gear-pin { fill: #c1a270; stroke: #6a5230; }.gear-bridge { fill: none; stroke: #726447; stroke-width: 5; }
+.nixie-maker { display: grid; gap: .025em; align-content: center; color: #d6bb88; text-align: center; font-family: Georgia, serif; letter-spacing: .015em; }
+.nixie-maker > span { font-size: .17em; line-height: 1.5; }.nixie-maker small { font: 400 .08em/1.4 ui-monospace, monospace; letter-spacing: .02em; color: #b59a73; }
+.nixie-gauge { width: .72em; height: .72em; }
+.nixie-gauge svg { display: block; width: 100%; height: 100%; }
+.gauge-rim { fill: #80613a; stroke: #c7a26b; stroke-width: 2; }.gauge-dial { fill: #d7c8a7; stroke: #29251c; stroke-width: 2; }.gauge-ticks { stroke: #594735; stroke-width: 1.5; }.nixie-gauge text { fill: #584631; font: 9px Georgia, serif; text-anchor: middle; }
+.nixie-pressure-needle { fill: #973f29; transform-origin: 50px 50px; animation: nixie-pressure 8s ease-in-out infinite alternate; }
+.nixie-pipe { position: absolute; bottom: .08em; left: 5%; right: 5%; height: .16em; border: .06em solid #85603c; border-top: 0; border-radius: 0 0 .2em .2em; box-shadow: inset 0 -.02em #c19b6970, 0 .015em #d5aa6b60, 0 .05em .045em #0008; z-index: -1; }
+.pipe-collar { position: absolute; bottom: -.075em; width: .1em; height: .09em; border: 1px solid #b5956855; background: linear-gradient(90deg, #5e4a32, #bba07a, #463721); }
+.collar-left { left: 15%; }.collar-right { right: 15%; }
+.nixie-feet { position: absolute; bottom: 0; left: 10%; right: 10%; display: flex; justify-content: space-between; z-index: -2; }
+.nixie-feet span { width: .3em; height: .22em; border-radius: 0 0 .06em .06em; background: linear-gradient(90deg, #30281e, #856a47, #32271a); box-shadow: 0 .04em .03em #0009; }
+@keyframes nixie-steam-rise { 0% { opacity: 0; transform: translateY(.15em) scale(.55); } 25% { opacity: .6; } 75% { opacity: .25; } 100% { opacity: 0; transform: translate(-.1em, -.38em) scale(1.45); } }
+@keyframes nixie-gear-turn { to { transform: rotate(360deg); } }
+@keyframes nixie-pressure { from { transform: rotate(25deg); } to { transform: rotate(38deg); } }
 .nixie-face {
   --nixie-light: #ffdb9e;
   --nixie-amber: #ff791b;
@@ -9,7 +57,7 @@
   width: 100%;
   position: relative;
   isolation: isolate;
-  font: 400 min(18cqw, 21svh, 170px)/1 DSEG7, monospace;
+  font: 400 1em/1 DSEG7, monospace;
   color: var(--nixie-light);
 }
 .nixie-pair { display: flex; gap: .065em; }
@@ -51,4 +99,9 @@
 .nixie-ghost { opacity: .06; }
 .nixie-glow { text-shadow: 0 0 .045em #fff7db, 0 0 .12em var(--nixie-amber), 0 0 .3em #fb5c1399; }
 .nixie-colon { font-size: .38em; color: var(--nixie-amber); text-shadow: 0 0 .2em #ff9e46; padding-top: .08em; }
-.preview-nixie .nixie-face { width: 92%; height: auto; font-size: 17cqw; }
+.preview-nixie .nixie-machine { width: 86%; font-size: 13.5cqw; }
+.preview-nixie .nixie-face { width: 100%; height: auto; }
+.preview-nixie .nixie-steam i { animation: none; opacity: .4; }
+.preview-nixie .nixie-gear, .preview-nixie .nixie-pressure-needle { animation: none; }
+@media (max-height:650px) and (min-width:600px) { .clock-nixie .nixie-machine { font-size: min(16cqw,12svh); } }
+@media (prefers-reduced-motion: reduce) { .nixie-steam i { animation: none; opacity: .4; }.nixie-gear, .nixie-pressure-needle { animation: none; } }

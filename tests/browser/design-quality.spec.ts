@@ -9,6 +9,10 @@ test('Nixie keeps all six tubes on one row on wide, short and portrait screens',
   await page.goto(pathToFileURL(resolve('dist/standalone/nixie.html')).href);
   for (const [width, height] of [[1440, 900], [1024, 600], [812, 375], [667, 375], [375, 667], [320, 568]]) {
     await page.setViewportSize({ width, height });
+    const machine = (await page.locator('.nixie-machine').boundingBox())!;
+    expect(machine.x).toBeGreaterThanOrEqual(0);
+    expect(machine.x + machine.width).toBeLessThanOrEqual(width);
+    expect(machine.y + machine.height).toBeLessThanOrEqual(height);
     const tubes = await page.locator('.nixie-tube:visible').evaluateAll(tubes => tubes.map(tube => {
       const { x, y, width, height } = tube.getBoundingClientRect();
       return { x, y, width, height };
@@ -31,6 +35,22 @@ test('Nixie keeps all six tubes on one row on wide, short and portrait screens',
   await page.clock.setSystemTime(new Date('2026-10-11T14:24:08+08:00'));
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
   expect(await page.locator('[data-nixie-digit]:not(.nixie-glow):visible').allTextContents()).toEqual(['0', '2', '2', '4']);
+});
+
+test('Nixie mechanical motion runs gently and becomes static with reduced motion', async ({ page, context }) => {
+  await context.setOffline(true);
+  await page.goto(pathToFileURL(resolve('dist/standalone/nixie.html')).href);
+  const machine = page.locator('.nixie-machine');
+  const names = await machine.evaluate(element => element.getAnimations({ subtree: true }).map(animation => (animation as CSSAnimation).animationName));
+  expect(names).toContain('nixie-steam-rise');
+  expect(names).toContain('nixie-gear-turn');
+  expect(names).toContain('nixie-pressure');
+  const first = await page.locator('.nixie-gear').first().evaluate(gear => getComputedStyle(gear).transform);
+  await page.waitForTimeout(200);
+  expect(await page.locator('.nixie-gear').first().evaluate(gear => getComputedStyle(gear).transform)).not.toBe(first);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  expect(await machine.evaluate(element => element.getAnimations({ subtree: true }).length)).toBe(0);
+  expect(await page.locator('.nixie-steam i').first().evaluate(steam => Number(getComputedStyle(steam).opacity))).toBeGreaterThan(0);
 });
 
 test('Nixie gallery and detail previews also show six horizontal tubes', async ({ page }) => {

@@ -1,6 +1,10 @@
 /* Shared controls stay quiet until the user interacts with the clock. */
 .clock-name { font-size: 12px; letter-spacing: 2px; }
 #date { font-size: clamp(12px,1.3vw,16px); line-height: 1.6; }
+.clock-meta { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 16px; text-align: center; }
+#period { font-size: 13px; line-height: 1.6; letter-spacing: 1px; font-weight: 600; }
+.clock-aura .clock-meta { display: none; }
+.clock-station #period, .clock-neumorphic #period, .clock-roman #period { color: #687179; }
 .clock-toolbar { gap: 8px; }
 .clock-toolbar button, .clock-toolbar select {
   border-radius: 10px;
@@ -13,7 +17,7 @@
 .clock-dawn #date, .clock-dawn #period, .clock-dawn .clock-name, .clock-dawn #status { color: #6f604c; }
 .clock-terminal .clock-name { font-size: 11px; color: #9bcba3; }
 .clock-terminal #date, .clock-terminal #period, .clock-terminal #timezone { color: #9ab9a0; }
-.clock-nixie { background: radial-gradient(ellipse at 50% 65%, #63301d33, transparent 65%), #090e0e; }
+.clock-nixie { background: radial-gradient(ellipse at 50% 60%, #75533330, transparent 65%), #0c100f; }
 .clock-nixie .clock-name, .clock-nixie #date { color: #b7a68c; }
 .clock-nixie #date { font-family: 'Space Mono', ui-monospace, monospace; letter-spacing: 1px; }
 .clock-nixie .clock-toolbar button, .clock-nixie .clock-toolbar select { background: #211d18; border-color: #504435; color: #d1bfa1; }
@@ -23,5 +27,12 @@
   .clock-toolbar button, .clock-toolbar select { font-size: 12px; padding-inline: 12px; }
   .clock-bubble .clock-display { font-size: min(37vw,16svh); }
 }
-@media (max-height:650px) and (min-width:600px) { .clock-name { font-size: 11px; } .clock-bubble .clock-display { font-size: min(22vw,24svh); } }
+@media (max-height:650px) and (min-width:600px) {
+  .clock-name { font-size: 11px; }
+  .clock-orbit .clock-display, .clock-stage:has(.face-analog) .clock-display { width: 40svh; }
+  .clock-bubble .clock-display { font-size: min(22vw,24svh); }
+}
+@media (max-height:700px) and (max-width:360px) {
+  .clock-orbit .clock-display, .clock-stage:has(.face-analog) .clock-display { width: 36svh; }
+}
 @media (prefers-reduced-motion:reduce) { .clock-toolbar button, .clock-toolbar select { transition: none; } }

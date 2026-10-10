@@ -3,7 +3,6 @@ import languages from '../data/languages.json';
 import { getLanguage, saveLanguage, isLanguage, LANGUAGE_KEY, type Language } from '../lib/language';
 import { mountBackground } from './clock-background';
 import { renderClockFace } from './clock-faces';
-import { analogFaces } from '../lib/clock-faces.mjs';
 declare const FLIP_CLOCK: boolean;
 
 type Message = 'storageError' | 'fullscreenError' | 'wakeError';
@@ -11,10 +10,12 @@ const id = document.body.dataset.clock!;
 const storageKey = `clock-gallery:fliqlo:settings:${id}:v1`;
 let twentyFour = true;
 let seconds = true;
+let showAmPm = true;
 let language: Language = 'zh-CN';
 try {
   const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
   twentyFour = saved.twentyFour !== false; seconds = saved.seconds !== false;
+  showAmPm = saved.showAmPm !== false;
   if (isLanguage(saved.language)) language = saved.language;
 } catch { /* Clock works without storage. */ }
 language = getLanguage(language);
@@ -26,6 +27,7 @@ const readable = document.querySelector<HTMLElement>('#readable-time')!;
 const nameLabel = document.querySelector<HTMLElement>('#clock-name')!;
 const formatButton = document.querySelector<HTMLButtonElement>('#format')!;
 const secondsButton = document.querySelector<HTMLButtonElement>('#seconds')!;
+const ampmButton = document.querySelector<HTMLButtonElement>('#ampm')!;
 const languageSelect = document.querySelector<HTMLSelectElement>('#language')!;
 const controls = document.querySelector<HTMLElement>('#clock-controls')!;
 const toolbar = document.querySelector<HTMLElement>('#clock-toolbar')!;
@@ -54,6 +56,9 @@ function renderControls() {
   formatButton.setAttribute('aria-pressed', String(twentyFour));
   secondsButton.textContent = seconds ? copy.secondsOn : copy.secondsOff;
   secondsButton.setAttribute('aria-pressed', String(seconds));
+  ampmButton.hidden = twentyFour;
+  ampmButton.textContent = showAmPm ? copy.ampmOn : copy.ampmOff;
+  ampmButton.setAttribute('aria-pressed', String(showAmPm));
   fullscreen.textContent = document.fullscreenElement ? copy.exitFullscreen : copy.fullscreen;
   fullscreen.setAttribute('aria-pressed', String(Boolean(document.fullscreenElement)));
   const awake = Boolean(wakeLock && !wakeLock.released);
@@ -81,7 +86,7 @@ function render() {
   readable.textContent = `${time}${twentyFour ? '' : ` ${part.period}`}`;
   display.setAttribute('aria-label', readable.textContent);
   dateLabel.textContent = dateFormat.format(now);
-  periodLabel.textContent = twentyFour || id === 'orbit' || analogFaces.includes(id) ? '' : part.period;
+  periodLabel.textContent = twentyFour || !showAmPm || id === 'aura' ? '' : part.period;
   if (id === 'flip-minimal') { if (flipFace) flipFace.value.value = time; }
   else if (id === 'orbit') {
     document.querySelector('#hour-hand')!.setAttribute('transform', `rotate(${part.hourAngle} 120 120)`);
@@ -89,18 +94,19 @@ function render() {
     const secondHand = document.querySelector<SVGElement>('#second-hand')!;
     secondHand.setAttribute('transform', `rotate(${part.secondAngle} 120 120)`);
     secondHand.style.display = seconds ? '' : 'none';
-  } else if (!renderClockFace(display, id, now, part, seconds, language, twentyFour)) { display.textContent = time; }
+  } else if (!renderClockFace(display, id, now, part, seconds, language, twentyFour, showAmPm)) { display.textContent = time; }
   document.body.classList.toggle('without-seconds', !seconds);
   const zone = document.querySelector('#timezone');
   if (zone) zone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 function persist() {
-  try { localStorage.setItem(storageKey, JSON.stringify({ twentyFour, seconds, language })); }
+  try { localStorage.setItem(storageKey, JSON.stringify({ twentyFour, seconds, showAmPm, language })); }
   catch { message = 'storageError'; }
   if (!saveLanguage(language)) message = 'storageError';
   renderControls();
 }
 formatButton.addEventListener('click', () => { twentyFour = !twentyFour; persist(); render(); });
+ampmButton.addEventListener('click', () => { showAmPm = !showAmPm; persist(); render(); });
 secondsButton.addEventListener('click', async () => { seconds = !seconds; persist(); if (id === 'flip-minimal') { flip?.unmount(); display.replaceChildren(); await mountFlip(); } render(); });
 function changeLanguage(value: Language) {
   language = value; dateFormat = makeDateFormat(); persist(); render();
@@ -113,7 +119,6 @@ languageSelect.addEventListener('change', () => {
   resetIdleTimer();
 });
 window.addEventListener('storage', event => { if (event.key === LANGUAGE_KEY && isLanguage(event.newValue)) changeLanguage(event.newValue); });
-if (id === 'orbit' || analogFaces.includes(id)) formatButton.hidden = true;
 
 let idleTimer: ReturnType<typeof setTimeout>;
 let keyboardInteraction = false;
