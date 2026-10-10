@@ -72,7 +72,7 @@ for (const id of catalogue.filter(clock => clock.offline).map(clock => clock.id)
     await page.goto(pathToFileURL(resolve(`dist/standalone/${id}.html`)).href);
     await expect(page.locator('#readable-time')).toHaveText('09:24:08');
     if (id === 'flip-minimal') await expect(page.locator('.flip-clock-card')).toHaveCount(6);
-    if (id === 'orbit') await expect(page.locator('#hour-hand')).toHaveAttribute('transform', 'rotate(282 120 120)');
+    if (id === 'orbit') expect(await page.locator('#hour-hand').evaluate(hand => (hand as SVGGraphicsElement).transform.baseVal.getItem(0).angle)).toBeCloseTo(282 + 8 / 120, 3);
     await page.clock.setSystemTime(new Date('2026-10-09T06:00:01Z'));
     await page.clock.runFor(1100);
     await expect(page.locator('#readable-time')).toHaveText('14:00:02');

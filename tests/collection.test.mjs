@@ -29,5 +29,5 @@ test('midnight, noon, and analog fractional angles use device local time', () =>
   const noon = timeParts(new Date(2026, 9, 9, 12, 0, 0), false);
   assert.equal(noon.hours, '12'); assert.equal(noon.period, 'PM');
   const afternoon = timeParts(new Date(2026, 9, 9, 15, 30, 30));
-  assert.equal(afternoon.hours, '15'); assert.equal(afternoon.hourAngle, 105); assert.equal(afternoon.minuteAngle, 183); assert.equal(afternoon.secondAngle, 180);
+  assert.equal(afternoon.hours, '15'); assert.equal(afternoon.hourAngle, 105.25); assert.equal(afternoon.minuteAngle, 183); assert.equal(afternoon.secondAngle, 180);
 });

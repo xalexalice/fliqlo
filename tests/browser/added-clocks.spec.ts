@@ -10,7 +10,7 @@ for (const id of added) {
     await page.clock.install({ time: new Date('2026-10-09T01:24:08Z') });
     await page.goto(pathToFileURL(resolve(`dist/standalone/${id}.html`)).href);
     if (analog.includes(id)) {
-      await expect(page.locator('[data-hand="hour"]')).toHaveAttribute('transform', 'rotate(282 120 120)');
+      expect(await page.locator('[data-hand="hour"]').evaluate(hand => (hand as SVGGraphicsElement).transform.baseVal.getItem(0).angle)).toBeCloseTo(282 + 8 / 120, 3);
       await expect(page.locator('[data-hand="second"]')).toHaveAttribute('transform', 'rotate(48 120 120)');
       await expect(page.locator('#format')).toBeHidden();
     } else if (id === 'aura') {
@@ -28,7 +28,7 @@ for (const id of added) {
     }
     await page.clock.setSystemTime(new Date('2026-10-09T06:00:01Z'));
     await page.clock.runFor(1100);
-    if (analog.includes(id)) await expect(page.locator('[data-hand="hour"]')).toHaveAttribute('transform', 'rotate(60 120 120)');
+    if (analog.includes(id)) expect(await page.locator('[data-hand="hour"]').evaluate(hand => (hand as SVGGraphicsElement).transform.baseVal.getItem(0).angle)).toBeCloseTo(60 + 2 / 120, 3);
     else if (id === 'aura') await expect(page.locator('[data-face-time]')).toHaveText('14:00:02');
     else if (id === 'rolling') expect(await page.locator('[data-digit]').evaluateAll(cells => cells.map(cell => (cell as HTMLElement).dataset.value).join(''))).toBe('140002');
     else if (id === 'bubble') expect(await page.locator('[data-bubble-digit]').allTextContents()).toEqual(['1', '4', '0', '0']);

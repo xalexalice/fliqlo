@@ -14,9 +14,9 @@ const { style, large = false } = Astro.props;
     <svg class="analog-preview" viewBox="0 0 240 240">
       <circle cx="120" cy="120" r="106" class="dial-edge" />
       {Array.from({ length: 60 }, (_, i) => <line x1="120" y1={i % 5 === 0 ? '23' : '27'} x2="120" y2="32" transform={`rotate(${i * 6} 120 120)`} class:list={['dial-tick', { 'dial-major': i % 5 === 0 }]} />)}
-      <line x1="120" y1="120" x2="76" y2="94" class="hand-hour" />
-      <line x1="120" y1="120" x2="166" y2="180" class="hand-minute" />
-      <line x1="120" y1="140" x2="120" y2="39" transform="rotate(78 120 120)" class="hand-second" />
+      <line x1="120" y1="120" x2="120" y2="66" transform="rotate(312.0666666667 120 120)" class="hand-hour" />
+      <line x1="120" y1="120" x2="120" y2="43" transform="rotate(144.8 120 120)" class="hand-minute" />
+      <line x1="120" y1="140" x2="120" y2="39" transform="rotate(48 120 120)" class="hand-second" />
       <circle cx="120" cy="120" r="4" fill="#e5ab7b" />
     </svg>
   </> : style === 'terminal' ? <>

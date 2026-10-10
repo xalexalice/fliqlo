@@ -10,7 +10,7 @@ export function renderClockFace(display: HTMLElement, id: string, now: Date, par
       if (unit === 'second') hand.style.display = seconds ? '' : 'none';
     });
     display.querySelectorAll<SVGElement>('[data-sub-hand]').forEach(hand => {
-      const angle = hand.dataset.subHand === 'second' ? part.secondAngle : hand.dataset.subHand === 'hours' ? (now.getHours() + now.getMinutes() / 60) * 15 : (now.getDate() - 1) / 31 * 360;
+      const angle = hand.dataset.subHand === 'second' ? part.secondAngle : hand.dataset.subHand === 'hours' ? (now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600) * 15 : (now.getDate() - 1) / 31 * 360;
       hand.setAttribute('transform', `rotate(${angle} ${hand.dataset.cx} ${hand.dataset.cy})`);
       if (hand.dataset.subHand === 'second') hand.style.display = seconds ? '' : 'none';
     });
