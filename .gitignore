@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+public/standalone/*.html
+public/legacy/fliqlo.html
+public/assets/og.svg
+.DS_Store
+.env*
+still-clocks-*.zip

@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ClockCard from '../components/ClockCard.astro';
+import ClockPreview from '../components/ClockPreview.astro';
+import Icon from '../components/Icon.astro';
+import clocks from '../data/clocks.json';
+import { path, playPath } from '../lib/paths';
+---
+<Layout>
+  <section class="hero container">
+    <div class="hero-copy"><p class="eyebrow"><span class="status-dot"></span>A LITTLE SPACE FOR YOUR TIME</p><h1>让时间，<br /><span>慢一点。</span></h1><p class="hero-description">一款喜欢的时钟，一小片专注的空间。<br />挑选、收藏，让每个当下都有自己的节奏。</p><a href="#gallery" class="button button-primary">找到你的时钟<Icon name="arrow" size={18} /></a><div class="hero-notes"><span>无需登录</span><i></i><span>浏览器直接运行</span><i></i><span>免费开源</span></div></div>
+    <div class="hero-feature"><a href={path('clocks/flip-minimal/')} class="hero-preview"><ClockPreview style="flip" large /><span class="feature-label"><span class="status-dot"></span>EDITOR'S PICK</span></a><div class="feature-meta"><div><span class="eyebrow">01 / THE CLASSIC</span><h2>翻过这一刻。</h2></div><a href={playPath('flip-minimal')} target="_blank" rel="noopener" class="round-link" aria-label="打开 Classic Flip 时钟"><Icon name="arrow" size={22} /></a></div></div>
+  </section>
+  <section class="gallery-section container" id="gallery" aria-labelledby="gallery-title">
+    <div class="section-heading"><div><p class="eyebrow">THE COLLECTION</p><h2 id="gallery-title">为此刻，选一款。</h2></div><p>每一种风格，都有自己的时间。</p></div>
+    <div class="gallery-toolbar"><div class="filter-tabs" role="group" aria-label="时钟分类">{['全部', '翻页', '数字', '指针'].map((category, i) => <button data-filter={category} class:list={['filter-tab', { active: i === 0 }]} aria-pressed={i === 0}>{category}</button>)}</div><div class="gallery-tools"><label class="search-box"><Icon name="search" size={18} /><span class="sr-only">搜索名称、标签</span><input id="clock-search" type="search" placeholder="搜索名称、标签…" /></label><label class="sr-only" for="clock-sort">排序</label><select id="clock-sort"><option value="featured">编辑精选</option><option value="newest">最近添加</option></select></div></div>
+    <p class="result-count" id="result-count" role="status">{clocks.length} 款精选时钟</p>
+    <div class="clock-grid" id="clock-grid">{clocks.map(clock => <ClockCard clock={clock} />)}</div>
+    <div id="empty-state" class="empty-state" hidden><h3>还没有找到这款时钟</h3><p>试试其他关键词，或切换分类。</p><button class="button button-secondary" id="reset-search">查看全部时钟</button></div>
+  </section>
+  <section class="collection-note container"><div class="note-symbol">↗</div><div><h2>你的时间，随处可用。</h2><p>下载一份 HTML，双击就在浏览器里运行。<br />把喜欢的时钟收藏起来，或分享给同样珍惜时间的人。</p></div><a href={path('favorites/')} class="text-link">整理我的收藏<Icon name="arrow" size={18} /></a></section>
+</Layout>

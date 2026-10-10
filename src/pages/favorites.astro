@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ClockCard from '../components/ClockCard.astro';
+import Icon from '../components/Icon.astro';
+import clocks from '../data/clocks.json';
+import { path } from '../lib/paths';
+---
+<Layout title="我的收藏 — Still 时刻" page="favorites"><section class="collection-page container"><div class="section-heading"><div><p class="eyebrow">YOUR PERSONAL COLLECTION</p><h1>喜欢的时刻。</h1><p class="page-description">收藏留在当前浏览器。用分享链接，把它们带到另一台设备。</p></div><button class="button button-secondary" id="share-collection"><Icon name="share" size={18} />分享收藏</button></div><p class="result-count" id="result-count" role="status"></p><div class="clock-grid" id="clock-grid">{clocks.map(clock => <ClockCard clock={clock} hidden />)}</div><div id="empty-state" class="empty-state" hidden><Icon name="heart" size={40} /><h2>把喜欢的时刻留在这里。</h2><p>在时钟卡片上点一下爱心，即可加入收藏。</p><a href={path()} class="button button-primary">发现时钟<Icon name="arrow" size={18} /></a></div><noscript><p>收藏功能需要启用 JavaScript。仍可从画廊直接打开时钟。</p></noscript></section></Layout>

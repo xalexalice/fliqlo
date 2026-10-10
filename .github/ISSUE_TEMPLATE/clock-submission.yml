@@ -1,0 +1,41 @@
+name: 提交一款时钟
+description: 分享可在浏览器运行的时钟作品
+title: '[Clock] '
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 时钟名称
+    validations:
+      required: true
+  - type: input
+    id: demo
+    attributes:
+      label: 运行地址
+      description: 公开网页地址，或在下方补充 HTML 文件。
+  - type: input
+    id: source
+    attributes:
+      label: 源代码地址
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: 作者
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: 使用许可
+      description: 明确的许可证名称与链接，不接受来源或许可不明的复制品。
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 简介与预览
+      description: 说明功能、依赖、移动端支持情况，可拖入预览图或 HTML 文件。
+    validations:
+      required: true

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aesthetic Fullscreen Clock</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: JetBrains Mono, Orbitron, Playfair Display, Inter, Bebas Neue -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@200;300;400;500;700&family=JetBrains+Mono:wght@200;400;500;700&family=Orbitron:wght@400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #000000;
+      --text-main: #f9fafb;
+      --text-muted: #6b7280;
+      --accent: #6366f1;
+      --panel-bg: rgba(18, 18, 22, 0.85);
+      --panel-border: rgba(255, 255, 255, 0.1);
+      --glow: rgba(99, 102, 241, 0.22);
+      --clock-font: 'JetBrains Mono', monospace;
+    }
+
+    body[data-theme="oled"] {
+      --bg-color: #000000;
+      --text-main: #f9fafb;
+      --text-muted: #71717a;
+      --accent: #e4e4e7;
+      --panel-bg: rgba(18, 18, 18, 0.85);
+      --panel-border: rgba(255, 255, 255, 0.1);
+      --glow: transparent;
+    }
+
+    body[data-theme="cyber"] {
+      --bg-color: #090a10;
+      --text-main: #00ffcc;
+      --text-muted: #059669;
+      --accent: #ff007f;
+      --panel-bg: rgba(16, 20, 31, 0.88);
+      --panel-border: rgba(0, 255, 204, 0.25);
+      --glow: rgba(0, 255, 204, 0.35);
+    }
+
+    body[data-theme="warm"] {
+      --bg-color: #1a1614;
+      --text-main: #f7ede2;
+      --text-muted: #938171;
+      --accent: #e09f58;
+      --panel-bg: rgba(38, 30, 26, 0.88);
+      --panel-border: rgba(224, 159, 88, 0.22);
+      --glow: rgba(224, 159, 88, 0.18);
+    }
+
+    body[data-theme="forest"] {
+      --bg-color: #0d1612;
+      --text-main: #e8f5e9;
+      --text-muted: #4e7c65;
+      --accent: #52b788;
+      --panel-bg: rgba(17, 30, 24, 0.88);
+      --panel-border: rgba(82, 183, 136, 0.22);
+      --glow: rgba(82, 183, 136, 0.25);
+    }
+
+    body[data-theme="light"] {
+      --bg-color: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --panel-bg: rgba(255, 255, 255, 0.9);
+      --panel-border: rgba(0, 0, 0, 0.1);
+      --glow: rgba(37, 99, 235, 0.12);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Font style classes */
+    .font-style-mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+    .font-style-digital { font-family: 'Orbitron', monospace; letter-spacing: 0.05em; }
+    .font-style-serif { font-family: 'Playfair Display', Georgia, serif; }
+    .font-style-sans { font-family: 'Inter', system-ui, sans-serif; font-weight: 300; }
+    .font-style-condensed { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; }
+
+    .clock-glow {
+      text-shadow: 0 0 35px var(--glow);
+    }
+
+    .cursor-hidden {
+      cursor: none !important;
+    }
+
+    .colon-pulse {
+      animation: blink 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    .fade-panel {
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-panel.hidden-state {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(16px) !important;
+    }
+
+    /* Color picker swatches */
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    input[type="color"]::-webkit-color-swatch {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body data-theme="oled" class="min-h-screen w-full flex flex-col justify-center items-center overflow-hidden p-6 md:p-12 relative">
+
+  <main class="flex flex-col items-center justify-center my-auto w-full select-none z-10 transition-transform duration-500">
+    <div class="flex items-baseline justify-center tracking-tight clock-glow">
+      <div id="clock-main" class="font-style-mono font-medium text-[20vw] md:text-[17vw] lg:text-[14rem] leading-none flex items-center">
+        <span id="hours">00</span>
+        <span id="colon" class="colon-pulse mx-1 md:mx-2 opacity-80" style="color: var(--accent);">:</span>
+        <span id="minutes">00</span>
+      </div>
+
+      <div class="flex flex-col justify-end ml-2 md:ml-5 mb-2 md:mb-6">
+        <span id="ampm" class="font-style-mono text-sm md:text-2xl font-semibold tracking-wider uppercase opacity-75 hidden">AM</span>
+        <span id="seconds-wrapper" class="font-style-mono font-light text-[6vw] md:text-[5vw] lg:text-5xl opacity-80 transition-all duration-300">
+          <span class="opacity-40 text-xs md:text-base mr-0.5">:</span><span id="seconds">00</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Date, Weekday, Week info centered below clock -->
+    <div class="mt-4 md:mt-8 flex flex-wrap items-center justify-center gap-2 md:gap-4 text-sm md:text-xl tracking-wide opacity-85">
+      <span id="date-weekday" class="font-semibold" style="color: var(--accent);">--</span>
+      <span class="opacity-25">•</span>
+      <span id="date-full" class="font-normal opacity-90">--</span>
+      <span class="opacity-25">•</span>
+      <span id="week-number" class="text-xs md:text-base opacity-60 font-mono">--</span>
+    </div>
+  </main>
+
+  <div id="settings-drawer" class="fixed inset-x-0 bottom-24 mx-auto max-w-lg w-[92%] p-5 rounded-3xl shadow-2xl backdrop-blur-2xl border transition-all duration-300 transform translate-y-6 opacity-0 pointer-events-none z-50 max-h-[75vh] overflow-y-auto"
+       style="background-color: var(--panel-bg); border-color: var(--panel-border);">
+    
+    <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span id="txt-settings-title" class="font-semibold text-sm tracking-wide">时钟与界面设置</span>
+      </div>
+      <button id="btn-close-settings" class="p-1 rounded-xl hover:bg-white/10 text-xs opacity-60 hover:opacity-100 transition-opacity">✕</button>
+    </div>
+
+    <div class="space-y-4 text-xs md:text-sm">
+      <!-- 1. Language selector -->
+      <div class="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5">
+        <span id="lbl-language" class="font-medium">国际语言 (Language)</span>
+        <select id="select-lang" class="bg-black/40 border border-white/15 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500">
+          <option value="zh-CN">简体中文 (Chinese)</option>
+          <option value="en-US">English (US)</option>
+          <option value="ja-JP">日本語 (Japanese)</option>
+          <option value="ko-KR">한국어 (Korean)</option>
+          <option value="fr-FR">Français (French)</option>
+          <option value="de-DE">Deutsch (German)</option>
+          <option value="es-ES">Español (Spanish)</option>
+        </select>
+      </div>
+
+      <!-- 2. Typography selector -->
+      <div class="flex flex-col gap-2 p-3 rounded-2xl bg-white/5 border border-white/5">
+        <span id="lbl-font-choice" class="font-medium">时钟字体 (Typography)</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+          <button data-font="mono" class="font-btn p-2 rounded-xl border border-white/10 hover:bg-white/10 text-center font-style-mono">等宽极客</button>
+          <button data-font="digital" class="font-btn p-2 rounded-xl border border-white/10 hover:bg-white/10 text-center font-style-digital">赛博数码</button>
+          <button data-font="serif" class="font-btn p-2 rounded-xl border border-white/10 hover:bg-white/10 text-center font-style-serif">复古衬线</button>
+          <button data-font="sans" class="font-btn p-2 rounded-xl border border-white/10 hover:bg-white/10 text-center font-style-sans">极简无衬线</button>
+          <button data-font="condensed" class="font-btn p-2 rounded-xl border border-white/10 hover:bg-white/10 text-center font-style-condensed">工业翻页</button>
+        </div>
+      </div>
+
+      <!-- 3. 12H AM/PM Display switch -->
+      <div id="ampm-toggle-container" class="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5 transition-opacity">
+        <div class="flex flex-col">
+          <span id="lbl-ampm-switch" class="font-medium">12小时制显示 AM/PM</span>
+          <span id="lbl-ampm-desc" class="text-[11px] opacity-50">仅在 12H 格式下生效</span>
+        </div>
+        <button id="btn-toggle-ampm" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/10 border border-white/15 transition-colors">
+          已开启
+        </button>
+      </div>
+
+      <!-- 4. Color Customize -->
+      <div class="p-3 rounded-2xl bg-white/5 border border-white/5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span id="lbl-custom-color" class="font-medium">个性化调色</span>
+          <button id="btn-reset-colors" class="text-[11px] opacity-60 hover:opacity-100 underline">恢复调色默认</button>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-[11px]">
+          <div class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-black/20 border border-white/5">
+            <span id="lbl-color-bg">背景底色</span>
+            <input type="color" id="picker-bg" value="#000000">
+          </div>
+          <div class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-black/20 border border-white/5">
+            <span id="lbl-color-text">主数字</span>
+            <input type="color" id="picker-text" value="#f9fafb">
+          </div>
+          <div class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-black/20 border border-white/5">
+            <span id="lbl-color-accent">高亮/冒号</span>
+            <input type="color" id="picker-accent" value="#6366f1">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer id="control-bar" class="fade-panel fixed bottom-5 inset-x-0 mx-auto w-full max-w-2xl px-4 z-40">
+    <div class="backdrop-blur-2xl border rounded-3xl px-3 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between shadow-2xl transition-all"
+         style="background-color: var(--panel-bg); border-color: var(--panel-border);">
+      
+      <!-- Preset Color Theme Dots -->
+      <div class="flex items-center space-x-1.5 sm:space-x-2">
+        <button data-set-theme="oled" title="OLED Black" class="theme-btn w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/20 bg-black hover:scale-110 active:scale-95 transition-transform ring-2 ring-transparent"></button>
+        <button data-set-theme="cyber" title="Cyberpunk" class="theme-btn w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/20 bg-[#00ffcc] hover:scale-110 active:scale-95 transition-transform ring-2 ring-transparent"></button>
+        <button data-set-theme="warm" title="Warm Clay" class="theme-btn w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/20 bg-[#e09f58] hover:scale-110 active:scale-95 transition-transform ring-2 ring-transparent"></button>
+        <button data-set-theme="forest" title="Forest Night" class="theme-btn w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/20 bg-[#52b788] hover:scale-110 active:scale-95 transition-transform ring-2 ring-transparent"></button>
+        <button data-set-theme="light" title="Clean Light" class="theme-btn w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-gray-400 bg-white hover:scale-110 active:scale-95 transition-transform ring-2 ring-transparent"></button>
+        <button data-set-theme="custom" id="btn-theme-custom-dot" title="Custom" class="theme-btn w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-white/30 bg-gradient-to-tr from-pink-500 via-indigo-500 to-emerald-400 hover:scale-110 active:scale-95 transition-transform ring-2 ring-transparent"></button>
+      </div>
+
+      <div class="h-4 w-[1px] bg-white/10 mx-1"></div>
+
+      <!-- Controls & Status integrated inside bottom bar -->
+      <div class="flex items-center space-x-1 sm:space-x-1.5">
+        <!-- 12/24H switcher -->
+        <button id="toggle-format" class="px-2.5 py-1 text-xs font-semibold rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 active:scale-95 transition-all">
+          24H
+        </button>
+
+        <!-- Seconds switch -->
+        <button id="toggle-seconds" class="px-2.5 py-1 text-xs font-medium rounded-xl hover:bg-white/10 active:scale-95 transition-all">
+          <span id="txt-btn-sec">秒数</span>
+        </button>
+
+        <!-- Wake Lock switch with icon and badge status -->
+        <button id="toggle-wake-lock" class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs hover:bg-white/10 active:scale-95 transition-all" title="屏幕常亮保护">
+          <span id="wake-dot" class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
+          <span id="txt-wake-status" class="hidden sm:inline text-[11px] opacity-75">息屏防护</span>
+        </button>
+
+        <!-- Gear / Settings drawer button -->
+        <button id="btn-open-settings" class="p-2 rounded-xl hover:bg-white/10 active:scale-95 transition-all" title="时钟设置">
+          <svg class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+        </button>
+
+        <!-- Fullscreen Toggle -->
+        <button id="btn-fullscreen" class="p-2 rounded-xl hover:bg-white/10 active:scale-95 transition-all" title="全屏浏览 (F / F11)">
+          <svg id="fullscreen-enter-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+          <svg id="fullscreen-exit-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v4m0 0H5m4 0L4 2m11 1V3m0 4h4m-4 0l5-5M9 21v-4m0 0H5m4 0l-5 5m11-1v-4m0 0h4m-4 0l5 5" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    /* Multi-language internationalization definitions */
+    const I18N = {
+      'zh-CN': {
+        weekDays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        weekPrefix: '第 ',
+        weekSuffix: ' 周',
+        secText: '秒数',
+        wakeOn: '已常亮',
+        wakeOff: '常亮保护',
+        wakeUnsupported: '不支持常亮',
+        settingsTitle: '时钟与界面设置',
+        lblLang: '国际语言 (Language)',
+        lblFont: '时钟字体 (Typography)',
+        lblAmPm: '12小时制显示 AM/PM',
+        lblAmPmDesc: '仅在 12H 格式下生效',
+        lblColor: '个性化调色',
+        lblResetColor: '恢复调色默认',
+        colorBg: '背景底色',
+        colorText: '主数字',
+        colorAccent: '高亮/冒号',
+        fonts: { mono: '等宽极客', digital: '赛博数码', serif: '复古衬线', sans: '极简无衬线', condensed: '工业翻页' },
+        on: '开启',
+        off: '关闭'
+      },
+      'en-US': {
+        weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        weekPrefix: 'Week ',
+        weekSuffix: '',
+        secText: 'Seconds',
+        wakeOn: 'Awake',
+        wakeOff: 'Keep Awake',
+        wakeUnsupported: 'No WakeLock',
+        settingsTitle: 'Clock & Display Settings',
+        lblLang: 'Language',
+        lblFont: 'Typography',
+        lblAmPm: 'Show AM/PM in 12H',
+        lblAmPmDesc: 'Applies to 12-hour format only',
+        lblColor: 'Custom Palette',
+        lblResetColor: 'Reset Palette',
+        colorBg: 'Background',
+        colorText: 'Digits',
+        colorAccent: 'Accent',
+        fonts: { mono: 'Monospace', digital: 'Digital LED', serif: 'Serif Classic', sans: 'Ultra Sans', condensed: 'Condensed' },
+        on: 'ON',
+        off: 'OFF'
+      },
+      'ja-JP': {
+        weekDays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+        weekPrefix: '第 ',
+        weekSuffix: ' 週',
+        secText: '秒数',
+        wakeOn: '常時点灯中',
+        wakeOff: '画面維持',
+        wakeUnsupported: '非対応',
+        settingsTitle: '時計とデザインの設定',
+        lblLang: '言語選択 (Language)',
+        lblFont: 'フォント (Typography)',
+        lblAmPm: '12時間制でAM/PMを表示',
+        lblAmPmDesc: '12Hモード時のみ有効',
+        lblColor: 'カスタムカラー',
+        lblResetColor: '初期色に戻す',
+        colorBg: '背景色',
+        colorText: '数字色',
+        colorAccent: 'アクセント',
+        fonts: { mono: '等幅モノ', digital: 'デジタルLED', serif: '明朝セリフ', sans: 'シンプルSans', condensed: 'ポスター体' },
+        on: 'オン',
+        off: 'オフ'
+      },
+      'ko-KR': {
+        weekDays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+        weekPrefix: '제 ',
+        weekSuffix: ' 주',
+        secText: '초 표시',
+        wakeOn: '화면 켜짐',
+        wakeOff: '화면 유지',
+        wakeUnsupported: '지원 안 됨',
+        settingsTitle: '시계 및 화면 설정',
+        lblLang: '언어 설정 (Language)',
+        lblFont: '글꼴 (Typography)',
+        lblAmPm: '12시간제 AM/PM 표시',
+        lblAmPmDesc: '12시간 형식에서만 적용',
+        lblColor: '사용자 지정 색상',
+        lblResetColor: '기본값 복원',
+        colorBg: '배경색',
+        colorText: '숫자 색상',
+        colorAccent: '강조 색상',
+        fonts: { mono: '고정폭 모노', digital: '디지털 LED', serif: '세리프 명조', sans: '미니멀 산세리프', condensed: '플립 스타일' },
+        on: '켜짐',
+        off: '꺼짐'
+      },
+      'fr-FR': {
+        weekDays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        weekPrefix: 'Semaine ',
+        weekSuffix: '',
+        secText: 'Secondes',
+        wakeOn: 'Actif',
+        wakeOff: 'Écran actif',
+        wakeUnsupported: 'Non supporté',
+        settingsTitle: 'Paramètres de l\'horloge',
+        lblLang: 'Langue (Language)',
+        lblFont: 'Typographie',
+        lblAmPm: 'Afficher AM/PM en 12H',
+        lblAmPmDesc: 'Valable uniquement en format 12H',
+        lblColor: 'Palette personnalisée',
+        lblResetColor: 'Réinitialiser',
+        colorBg: 'Arrière-plan',
+        colorText: 'Chiffres',
+        colorAccent: 'Accentuation',
+        fonts: { mono: 'Monospace', digital: 'Digital LED', serif: 'Sérif Élégant', sans: 'Sans-serif', condensed: 'Condensé' },
+        on: 'Oui',
+        off: 'Non'
+      },
+      'de-DE': {
+        weekDays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+        weekPrefix: 'KW ',
+        weekSuffix: '',
+        secText: 'Sekunden',
+        wakeOn: 'Wach',
+        wakeOff: 'Wachhalten',
+        wakeUnsupported: 'Nicht unterstützt',
+        settingsTitle: 'Uhr- und Anzeigeeinstellungen',
+        lblLang: 'Sprache (Language)',
+        lblFont: 'Schriftart',
+        lblAmPm: 'AM/PM im 12h-Modus',
+        lblAmPmDesc: 'Gilt nur im 12-Stunden-Format',
+        lblColor: 'Farbpalette',
+        lblResetColor: 'Zurücksetzen',
+        colorBg: 'Hintergrund',
+        colorText: 'Ziffern',
+        colorAccent: 'Akzent',
+        fonts: { mono: 'Monospace', digital: 'Digital LED', serif: 'Serif Klassik', sans: 'Minimal Sans', condensed: 'Kompakt' },
+        on: 'An',
+        off: 'Aus'
+      },
+      'es-ES': {
+        weekDays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        weekPrefix: 'Semana ',
+        weekSuffix: '',
+        secText: 'Segundos',
+        wakeOn: 'Activo',
+        wakeOff: 'Mantener activo',
+        wakeUnsupported: 'No compatible',
+        settingsTitle: 'Ajustes del Reloj',
+        lblLang: 'Idioma (Language)',
+        lblFont: 'Tipografía',
+        lblAmPm: 'Mostrar AM/PM en 12H',
+        lblAmPmDesc: 'Solo en modo de 12 horas',
+        lblColor: 'Colores personalizados',
+        lblResetColor: 'Restablecer',
+        colorBg: 'Fondo',
+        colorText: 'Dígitos',
+        colorAccent: 'Acento',
+        fonts: { mono: 'Monoespaciada', digital: 'LED Digital', serif: 'Serifa Clásica', sans: 'Sans Limpio', condensed: 'Condensada' },
+        on: 'Sí',
+        off: 'No'
+      }
+    };
+
+    const DEFAULT_CUSTOM_COLORS = {
+      bg: '#0f172a',
+      text: '#38bdf8',
+      accent: '#f43f5e'
+    };
+
+    /* App State with LocalStorage Persistence */
+    const state = {
+      is24Hour: localStorage.getItem('clk_24h') !== 'false',
+      showSeconds: localStorage.getItem('clk_seconds') !== 'false',
+      showAmPm: localStorage.getItem('clk_show_ampm') !== 'false',
+      lang: localStorage.getItem('clk_lang') || 'zh-CN',
+      font: localStorage.getItem('clk_font') || 'mono',
+      theme: localStorage.getItem('clk_theme') || 'oled',
+      customColors: JSON.parse(localStorage.getItem('clk_custom_colors')) || DEFAULT_CUSTOM_COLORS,
+      wakeLock: null,
+      wakeLockActive: false,
+      idleTimeout: null,
+      isIdle: false,
+      settingsOpen: false
+    };
+
+    /* DOM Bindings */
+    const elHours = document.getElementById('hours');
+    const elMinutes = document.getElementById('minutes');
+    const elSeconds = document.getElementById('seconds');
+    const elSecondsWrapper = document.getElementById('seconds-wrapper');
+    const elAmpm = document.getElementById('ampm');
+    const elDateWeekday = document.getElementById('date-weekday');
+    const elDateFull = document.getElementById('date-full');
+    const elWeekNumber = document.getElementById('week-number');
+    const elControlBar = document.getElementById('control-bar');
+    const elClockMain = document.getElementById('clock-main');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const btnToggleFormat = document.getElementById('toggle-format');
+    const btnToggleSeconds = document.getElementById('toggle-seconds');
+    const btnToggleWakeLock = document.getElementById('toggle-wake-lock');
+    const txtBtnSec = document.getElementById('txt-btn-sec');
+    const txtWakeStatus = document.getElementById('txt-wake-status');
+    const wakeDot = document.getElementById('wake-dot');
+    const iconFullscreenEnter = document.getElementById('fullscreen-enter-icon');
+    const iconFullscreenExit = document.getElementById('fullscreen-exit-icon');
+    const themeButtons = document.querySelectorAll('[data-set-theme]');
+
+    /* Drawer Elements */
+    const settingsDrawer = document.getElementById('settings-drawer');
+    const btnOpenSettings = document.getElementById('btn-open-settings');
+    const btnCloseSettings = document.getElementById('btn-close-settings');
+    const selectLang = document.getElementById('select-lang');
+    const fontButtons = document.querySelectorAll('[data-font]');
+    const ampmToggleContainer = document.getElementById('ampm-toggle-container');
+    const btnToggleAmPm = document.getElementById('btn-toggle-ampm');
+    const pickerBg = document.getElementById('picker-bg');
+    const pickerText = document.getElementById('picker-text');
+    const pickerAccent = document.getElementById('picker-accent');
+    const btnResetColors = document.getElementById('btn-reset-colors');
+
+    /* I18n Label Elements */
+    const txtSettingsTitle = document.getElementById('txt-settings-title');
+    const lblLanguage = document.getElementById('lbl-language');
+    const lblFontChoice = document.getElementById('lbl-font-choice');
+    const lblAmPmSwitch = document.getElementById('lbl-ampm-switch');
+    const lblAmPmDesc = document.getElementById('lbl-ampm-desc');
+    const lblCustomColor = document.getElementById('lbl-custom-color');
+    const lblResetColor = document.getElementById('btn-reset-colors');
+    const lblColorBg = document.getElementById('lbl-color-bg');
+    const lblColorText = document.getElementById('lbl-color-text');
+    const lblColorAccent = document.getElementById('lbl-color-accent');
+
+    function getWeekNumber(date) {
+      const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    }
+
+    function applyTranslations() {
+      const dict = I18N[state.lang] || I18N['zh-CN'];
+      txtSettingsTitle.textContent = dict.settingsTitle;
+      lblLanguage.textContent = dict.lblLang;
+      lblFontChoice.textContent = dict.lblFont;
+      lblAmPmSwitch.textContent = dict.lblAmPm;
+      lblAmPmDesc.textContent = dict.lblAmPmDesc;
+      lblCustomColor.textContent = dict.lblColor;
+      lblResetColor.textContent = dict.lblResetColor;
+      lblColorBg.textContent = dict.colorBg;
+      lblColorText.textContent = dict.colorText;
+      lblColorAccent.textContent = dict.colorAccent;
+      txtBtnSec.textContent = dict.secText;
+      btnToggleAmPm.textContent = state.showAmPm ? dict.on : dict.off;
+      updateWakeLockUI(state.wakeLockActive);
+
+      // Update typography button labels
+      fontButtons.forEach(btn => {
+        const fontKey = btn.getAttribute('data-font');
+        if (dict.fonts && dict.fonts[fontKey]) {
+          btn.textContent = dict.fonts[fontKey];
+        }
+      });
+    }
+
+    function applyFont(fontName) {
+      state.font = fontName;
+      localStorage.setItem('clk_font', fontName);
+
+      const fontClasses = ['font-style-mono', 'font-style-digital', 'font-style-serif', 'font-style-sans', 'font-style-condensed'];
+      elClockMain.classList.remove(...fontClasses);
+      elSecondsWrapper.classList.remove(...fontClasses);
+      elAmpm.classList.remove(...fontClasses);
+
+      const targetClass = `font-style-${fontName}`;
+      elClockMain.classList.add(targetClass);
+      elSecondsWrapper.classList.add(targetClass);
+      elAmpm.classList.add(targetClass);
+
+      fontButtons.forEach(btn => {
+        const isCurrent = btn.getAttribute('data-font') === fontName;
+        btn.classList.toggle('bg-white/20', isCurrent);
+        btn.classList.toggle('border-white/40', isCurrent);
+      });
+    }
+
+    function applyCustomTheme() {
+      document.body.removeAttribute('data-theme');
+      document.documentElement.style.setProperty('--bg-color', state.customColors.bg);
+      document.documentElement.style.setProperty('--text-main', state.customColors.text);
+      document.documentElement.style.setProperty('--accent', state.customColors.accent);
+      document.documentElement.style.setProperty('--glow', state.customColors.accent + '3b');
+      
+      pickerBg.value = state.customColors.bg;
+      pickerText.value = state.customColors.text;
+      pickerAccent.value = state.customColors.accent;
+    }
+
+    function setTheme(theme) {
+      state.theme = theme;
+      localStorage.setItem('clk_theme', theme);
+
+      themeButtons.forEach(btn => {
+        const isCurrent = btn.getAttribute('data-set-theme') === theme;
+        btn.classList.toggle('ring-white/90', isCurrent);
+        btn.classList.toggle('scale-110', isCurrent);
+      });
+
+      if (theme === 'custom') {
+        applyCustomTheme();
+      } else {
+        document.documentElement.style.removeProperty('--bg-color');
+        document.documentElement.style.removeProperty('--text-main');
+        document.documentElement.style.removeProperty('--accent');
+        document.documentElement.style.removeProperty('--glow');
+        document.body.setAttribute('data-theme', theme);
+      }
+    }
+
+    function handleColorInput() {
+      state.customColors.bg = pickerBg.value;
+      state.customColors.text = pickerText.value;
+      state.customColors.accent = pickerAccent.value;
+      localStorage.setItem('clk_custom_colors', JSON.stringify(state.customColors));
+      setTheme('custom');
+    }
+
+    pickerBg.addEventListener('input', handleColorInput);
+    pickerText.addEventListener('input', handleColorInput);
+    pickerAccent.addEventListener('input', handleColorInput);
+
+    btnResetColors.addEventListener('click', () => {
+      state.customColors = { ...DEFAULT_CUSTOM_COLORS };
+      localStorage.setItem('clk_custom_colors', JSON.stringify(state.customColors));
+      setTheme('custom');
+    });
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        setTheme(btn.getAttribute('data-set-theme'));
+      });
+    });
+
+    fontButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyFont(btn.getAttribute('data-font'));
+      });
+    });
+
+    selectLang.value = state.lang;
+    selectLang.addEventListener('change', (e) => {
+      state.lang = e.target.value;
+      localStorage.setItem('clk_lang', state.lang);
+      applyTranslations();
+      updateClock();
+    });
+
+    function updateAmPmState() {
+      const dict = I18N[state.lang] || I18N['zh-CN'];
+      btnToggleAmPm.textContent = state.showAmPm ? dict.on : dict.off;
+      btnToggleAmPm.classList.toggle('bg-emerald-500/20', state.showAmPm);
+      btnToggleAmPm.classList.toggle('text-emerald-300', state.showAmPm);
+
+      if (!state.is24Hour && state.showAmPm) {
+        elAmpm.classList.remove('hidden');
+      } else {
+        elAmpm.classList.add('hidden');
+      }
+
+      ampmToggleContainer.style.opacity = state.is24Hour ? '0.5' : '1';
+    }
+
+    btnToggleAmPm.addEventListener('click', () => {
+      state.showAmPm = !state.showAmPm;
+      localStorage.setItem('clk_show_ampm', state.showAmPm);
+      updateAmPmState();
+      updateClock();
+    });
+
+    function updateFormatDisplay() {
+      btnToggleFormat.textContent = state.is24Hour ? '24H' : '12H';
+      updateAmPmState();
+      updateClock();
+    }
+
+    btnToggleFormat.addEventListener('click', () => {
+      state.is24Hour = !state.is24Hour;
+      localStorage.setItem('clk_24h', state.is24Hour);
+      updateFormatDisplay();
+    });
+
+    function updateSecondsVisibility() {
+      if (state.showSeconds) {
+        elSecondsWrapper.classList.remove('hidden');
+        btnToggleSeconds.classList.add('bg-white/10');
+      } else {
+        elSecondsWrapper.classList.add('hidden');
+        btnToggleSeconds.classList.remove('bg-white/10');
+      }
+    }
+
+    btnToggleSeconds.addEventListener('click', () => {
+      state.showSeconds = !state.showSeconds;
+      localStorage.setItem('clk_seconds', state.showSeconds);
+      updateSecondsVisibility();
+    });
+
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      if (!state.is24Hour) {
+        const isPM = hours >= 12;
+        elAmpm.textContent = isPM ? 'PM' : 'AM';
+        if (state.showAmPm) {
+          elAmpm.classList.remove('hidden');
+        } else {
+          elAmpm.classList.add('hidden');
+        }
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+      } else {
+        elAmpm.classList.add('hidden');
+      }
+
+      elHours.textContent = String(hours).padStart(2, '0');
+      elMinutes.textContent = minutes;
+      elSeconds.textContent = seconds;
+
+      // Localized Weekday & Date string
+      const dict = I18N[state.lang] || I18N['zh-CN'];
+      elDateWeekday.textContent = dict.weekDays[now.getDay()];
+
+      try {
+        const dateFormatter = new Intl.DateTimeFormat(state.lang, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        elDateFull.textContent = dateFormatter.format(now);
+      } catch {
+        elDateFull.textContent = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      }
+
+      elWeekNumber.textContent = `${dict.weekPrefix}${getWeekNumber(now)}${dict.weekSuffix}`;
+    }
+
+    function toggleSettingsDrawer(forceState) {
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : !state.settingsOpen;
+      state.settingsOpen = shouldOpen;
+
+      if (shouldOpen) {
+        settingsDrawer.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-6');
+        settingsDrawer.classList.add('opacity-100', 'translate-y-0');
+        btnOpenSettings.classList.add('bg-white/20');
+      } else {
+        settingsDrawer.classList.add('opacity-0', 'pointer-events-none', 'translate-y-6');
+        settingsDrawer.classList.remove('opacity-100', 'translate-y-0');
+        btnOpenSettings.classList.remove('bg-white/20');
+      }
+    }
+
+    btnOpenSettings.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleSettingsDrawer();
+    });
+
+    btnCloseSettings.addEventListener('click', () => toggleSettingsDrawer(false));
+
+    document.addEventListener('click', (e) => {
+      if (state.settingsOpen && !settingsDrawer.contains(e.target) && !btnOpenSettings.contains(e.target)) {
+        toggleSettingsDrawer(false);
+      }
+    });
+
+    /* Smart Inactivity Auto-Hide */
+    function resetIdleTimer() {
+      if (state.settingsOpen) return;
+      if (state.isIdle) {
+        state.isIdle = false;
+        document.body.classList.remove('cursor-hidden');
+        elControlBar.classList.remove('hidden-state');
+      }
+      clearTimeout(state.idleTimeout);
+      state.idleTimeout = setTimeout(() => {
+        if (!state.settingsOpen) {
+          state.isIdle = true;
+          document.body.classList.add('cursor-hidden');
+          elControlBar.classList.add('hidden-state');
+        }
+      }, 3000);
+    }
+
+    window.addEventListener('mousemove', resetIdleTimer);
+    window.addEventListener('touchstart', resetIdleTimer, { passive: true });
+    window.addEventListener('keydown', resetIdleTimer);
+
+    /* Fullscreen Handling */
+    async function toggleFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (err) {
+        console.warn('Fullscreen request blocked:', err);
+      }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const isFull = !!document.fullscreenElement;
+      iconFullscreenEnter.classList.toggle('hidden', isFull);
+      iconFullscreenExit.classList.toggle('hidden', !isFull);
+    });
+
+    btnFullscreen.addEventListener('click', toggleFullscreen);
+
+    /* Wake Lock Screen On */
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          state.wakeLock = await navigator.wakeLock.request('screen');
+          state.wakeLockActive = true;
+          updateWakeLockUI(true);
+          state.wakeLock.addEventListener('release', () => {
+            state.wakeLockActive = false;
+            updateWakeLockUI(false);
+          });
+        } catch {
+          state.wakeLockActive = false;
+          updateWakeLockUI(false);
+        }
+      } else {
+        updateWakeLockUI(false, true);
+      }
+    }
+
+    function releaseWakeLock() {
+      if (state.wakeLock !== null) {
+        state.wakeLock.release();
+        state.wakeLock = null;
+        state.wakeLockActive = false;
+        updateWakeLockUI(false);
+      }
+    }
+
+    function updateWakeLockUI(active, unsupported = false) {
+      const dict = I18N[state.lang] || I18N['zh-CN'];
+      if (unsupported) {
+        wakeDot.className = 'w-1.5 h-1.5 rounded-full bg-zinc-600';
+        txtWakeStatus.textContent = dict.wakeUnsupported;
+        return;
+      }
+      if (active) {
+        wakeDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]';
+        txtWakeStatus.textContent = dict.wakeOn;
+        btnToggleWakeLock.classList.add('text-emerald-400');
+      } else {
+        wakeDot.className = 'w-1.5 h-1.5 rounded-full bg-zinc-500';
+        txtWakeStatus.textContent = dict.wakeOff;
+        btnToggleWakeLock.classList.remove('text-emerald-400');
+      }
+    }
+
+    btnToggleWakeLock.addEventListener('click', () => {
+      if (state.wakeLockActive) {
+        releaseWakeLock();
+      } else {
+        requestWakeLock();
+      }
+    });
+
+    document.addEventListener('visibilitychange', async () => {
+      if (state.wakeLock !== null && document.visibilityState === 'visible') {
+        await requestWakeLock();
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      const key = e.key.toLowerCase();
+      if (key === 'f') {
+        e.preventDefault();
+        toggleFullscreen();
+      } else if (key === 's') {
+        e.preventDefault();
+        toggleSettingsDrawer();
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        btnToggleSeconds.click();
+      }
+    });
+
+    /* Initialize Application */
+    applyTranslations();
+    applyFont(state.font);
+    setTheme(state.theme);
+    updateSecondsVisibility();
+    updateFormatDisplay();
+    updateClock();
+    setInterval(updateClock, 1000);
+    resetIdleTimer();
+
+    // Auto-acquire wake lock on initial user interaction
+    const initGesture = async () => {
+      await requestWakeLock();
+      window.removeEventListener('click', initGesture);
+      window.removeEventListener('touchstart', initGesture);
+    };
+    window.addEventListener('click', initGesture, { once: true });
+    window.addEventListener('touchstart', initGesture, { once: true });
+  </script>
+</body>
+</html>

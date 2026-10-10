@@ -1,0 +1,25 @@
+---
+interface Props { style: string; large?: boolean }
+const { style, large = false } = Astro.props;
+---
+<div class:list={['clock-preview', `preview-${style}`, { 'preview-large': large }]} aria-hidden="true">
+  {style === 'flip' ? <>
+    <div class="flip-display"><span class="flip-tile">1</span><span class="flip-tile">0</span><b>:</b><span class="flip-tile">2</span><span class="flip-tile">4</span></div>
+    <span class="preview-caption">FRIDAY, OCTOBER 9</span>
+  </> : style === 'orbit' ? <>
+    <svg class="analog-preview" viewBox="0 0 240 240">
+      <circle cx="120" cy="120" r="106" class="dial-edge" />
+      {Array.from({ length: 60 }, (_, i) => <line x1="120" y1={i % 5 === 0 ? '23' : '27'} x2="120" y2="32" transform={`rotate(${i * 6} 120 120)`} class:list={['dial-tick', { 'dial-major': i % 5 === 0 }]} />)}
+      <line x1="120" y1="120" x2="76" y2="94" class="hand-hour" />
+      <line x1="120" y1="120" x2="166" y2="180" class="hand-minute" />
+      <line x1="120" y1="140" x2="120" y2="39" transform="rotate(78 120 120)" class="hand-second" />
+      <circle cx="120" cy="120" r="4" fill="#e5ab7b" />
+    </svg>
+  </> : style === 'terminal' ? <>
+    <span class="terminal-label">LOCAL TIME / SYSTEM ONLINE</span><span class="preview-time">10:24<span class="preview-seconds">:08</span></span><span class="preview-caption">FRI · OCT 09 · UTC+08:00</span>
+  </> : style === 'dawn' ? <>
+    <span class="dawn-label">a little time for yourself</span><span class="preview-time">10:24</span><span class="preview-caption">Friday, October 9</span>
+  </> : <>
+    <span class="preview-caption">{style === 'aesthetic' ? 'FRIDAY, OCTOBER 9' : 'THE PRESENT MOMENT'}</span><span class="preview-time">10<span class="time-colon">:</span>24</span><span class="preview-caption">{style === 'aesthetic' ? 'stay in the moment' : '09 OCTOBER · FRIDAY'}</span>
+  </>}
+</div>

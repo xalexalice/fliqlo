@@ -1,0 +1,29 @@
+{
+  "name": "still-clock-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run clocks && astro dev",
+    "clocks": "node scripts/build-clocks.mjs",
+    "build": "npm run clocks && astro build && node scripts/verify-build.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "astro": "7.3.8",
+    "flipclock": "1.0.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.19.2",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

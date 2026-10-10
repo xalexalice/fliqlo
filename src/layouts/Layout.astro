@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import catalogue from '../data/clocks.json';
+import { path, repo } from '../lib/paths';
+interface Props { title?: string; description?: string; page?: string }
+const { title = 'Still 时刻 — 让时间，慢一点。', description = '精选浏览器时钟。翻页、数字与指针，收藏喜欢的设计，下载独立 HTML，给专注留一点空间。', page = 'gallery' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111714" /><title>{title}</title><meta name="description" content={description} />
+    <link rel="canonical" href={canonical} /><link rel="icon" type="image/png" href={path('assets/logo.png')} />
+    <meta property="og:type" content="website" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={new URL(path('assets/logo.png'), Astro.site)} />
+  </head>
+  <body data-page={page}>
+    <a href="#main" class="skip-link">跳到主要内容</a>
+    <header class="site-header"><div class="header-inner">
+      <a href={path()} class="brand" aria-label="Still 时刻首页"><img src={path('assets/logo.png')} alt="SY" width="42" height="42" /><span>still<span class="brand-cn">时刻</span></span></a>
+      <nav aria-label="主导航"><a href={path()} aria-current={page === 'gallery' ? 'page' : undefined}>时钟画廊</a><a href={path('favorites/')} aria-current={page === 'favorites' ? 'page' : undefined}>我的收藏<span class="favorite-count" data-favorite-count>0</span></a><a href={path('submit/')} aria-current={page === 'submit' ? 'page' : undefined}>提交时钟</a></nav>
+      <a class="github-link" href={repo} target="_blank" rel="noopener">GitHub<Icon name="external" size={15} /></a>
+    </div></header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer"><div><a class="footer-brand" href={path()}>still<span>时间本身，就是风景。</span></a><p>在浏览器里，为专注留一点空间。</p></div><div class="footer-links"><a href={repo} target="_blank" rel="noopener">开源代码<Icon name="external" size={14} /></a><a href={path('submit/')}>贡献一款时钟<Icon name="arrow" size={14} /></a><span>© {new Date().getFullYear()} Still · Made for the moment</span></div></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <dialog id="share-dialog"><form method="dialog"><button class="dialog-close" aria-label="关闭">×</button></form><h2>分享这个时刻</h2><p>复制链接，发送给朋友。</p><label for="share-url" class="sr-only">分享链接</label><input id="share-url" type="text" readonly /><button id="copy-link" class="button button-primary">复制链接</button><p id="copy-status" role="status"></p></dialog>
+    <script type="application/json" id="catalogue" set:html={JSON.stringify(catalogue)} />
+    <script src="../scripts/gallery.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+{
+  "assembled_at_utc": "2026-10-10T02:25:23.996884+00:00",
+  "date_basis": "Default-branch latest commit committer date; release/npm publication dates are separate; stars are snapshots.",
+  "repositories": [
+    {
+      "repository": "objectivehtml/FlipClock",
+      "repository_url": "https://github.com/objectivehtml/FlipClock",
+      "retrieved_at_utc": "2026-10-10T02:11:55.562078+00:00",
+      "created_at_utc": "2013-04-17T05:06:42Z",
+      "stars": 2783,
+      "default_branch": "master",
+      "archived": false,
+      "latest_default_branch_commit": {
+        "sha": "a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b",
+        "committer_date_utc": "2025-08-24T05:36:01Z",
+        "message": "chore: added copyright to docs footer",
+        "url": "https://github.com/objectivehtml/FlipClock/commit/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b"
+      },
+      "pushed_at_utc": "2025-09-09T21:06:56Z",
+      "license": "MIT",
+      "license_urls": [
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/license.txt"
+      ],
+      "github_latest_release": {
+        "tag": "v1.0.1",
+        "published_at_utc": "2025-08-24T03:42:33Z",
+        "url": "https://github.com/objectivehtml/FlipClock/releases/tag/v1.0.1"
+      },
+      "npm_latest": {
+        "name": "flipclock",
+        "latest": "1.0.1",
+        "published_at": "2025-08-24T03:42:31.384Z",
+        "dependencies": {
+          "date-fns": "^4.1.0",
+          "goober": "^2.1.16",
+          "solid-js": "^1.9.9"
+        },
+        "peerDependencies": null,
+        "license": "MIT"
+      },
+      "npm_registry_url": "https://registry.npmjs.org/flipclock",
+      "reviewed_source_urls": [
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/docs/guide/build-your-own-face.md",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/license.txt",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/package.json",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/src/FlipClock.ts",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/src/Timer.ts",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/src/faces/Clock.ts",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/src/themes/flipclock/flipclock.css.ts",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/src/themes/flipclock/index.tsx",
+        "https://github.com/objectivehtml/FlipClock/blob/a7ff42742912b7dd9b47719fe0ebc2b1b00ccf4b/test/faces/Clock.test.ts"
+      ],
+      "metadata_api_url": "https://api.github.com/repos/objectivehtml/FlipClock",
+      "latest_commit_api_url": "https://api.github.com/repos/objectivehtml/FlipClock/commits?per_page=1"
+    },
+    {
+      "repository": "pqina/flip",
+      "repository_url": "https://github.com/pqina/flip",
+      "retrieved_at_utc": "2026-10-10T02:11:54.643376+00:00",
+      "created_at_utc": "2020-03-06T07:48:41Z",
+      "stars": 1023,
+      "default_branch": "master",
+      "archived": false,
+      "latest_default_branch_commit": {
+        "sha": "5ba01ae23451fb15c9e07a30eca69d6126f67628",
+        "committer_date_utc": "2026-07-13T11:42:27Z",
+        "message": "Update LICENSE",
+        "url": "https://github.com/pqina/flip/commit/5ba01ae23451fb15c9e07a30eca69d6126f67628"
+      },
+      "pushed_at_utc": "2026-07-13T11:42:28Z",
+      "license": "MIT",
+      "license_urls": [
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/LICENSE"
+      ],
+      "github_latest_release": null,
+      "npm_latest": {
+        "name": "@pqina/flip",
+        "latest": "1.8.4",
+        "published_at": "2024-11-26T15:04:52.581Z",
+        "dependencies": null,
+        "peerDependencies": null,
+        "license": "MIT"
+      },
+      "npm_registry_url": "https://registry.npmjs.org/@pqina%2fflip",
+      "reviewed_source_urls": [
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/CHANGELOG.md",
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/LICENSE",
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/gulpfile.babel.js",
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/package.json",
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/src/js/index.js",
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/src/sass/modules/_default.scss",
+        "https://github.com/pqina/flip/blob/5ba01ae23451fb15c9e07a30eca69d6126f67628/src/sass/modules/_layout.scss"
+      ],
+      "metadata_api_url": "https://api.github.com/repos/pqina/flip",
+      "latest_commit_api_url": "https://api.github.com/repos/pqina/flip/commits?per_page=1"
+    },
+    {
+      "repository": "wojtekmaj/react-clock",
+      "repository_url": "https://github.com/wojtekmaj/react-clock",
+      "retrieved_at_utc": "2026-10-10T02:11:55.089671+00:00",
+      "created_at_utc": "2017-11-11T18:41:11Z",
+      "stars": 393,
+      "default_branch": "main",
+      "archived": false,
+      "latest_default_branch_commit": {
+        "sha": "403d393aa5b4d40eeb8128e55d0dc309f6843406",
+        "committer_date_utc": "2026-10-07T19:52:49Z",
+        "message": "Bump source-map-js from 1.2.1 to 1.2.2",
+        "url": "https://github.com/wojtekmaj/react-clock/commit/403d393aa5b4d40eeb8128e55d0dc309f6843406"
+      },
+      "pushed_at_utc": "2026-10-07T19:52:52Z",
+      "license": "MIT",
+      "license_urls": [
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/LICENSE"
+      ],
+      "github_latest_release": {
+        "tag": "v6.0.0",
+        "published_at_utc": "2025-05-29T09:15:50Z",
+        "url": "https://github.com/wojtekmaj/react-clock/releases/tag/v6.0.0"
+      },
+      "npm_latest": {
+        "name": "react-clock",
+        "latest": "6.0.0",
+        "published_at": "2025-05-29T09:16:15.530Z",
+        "dependencies": {
+          "@wojtekmaj/date-utils": "^2.0.2",
+          "clsx": "^2.0.0",
+          "get-user-locale": "^3.0.0"
+        },
+        "peerDependencies": {
+          "@types/react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+          "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+          "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+        },
+        "license": "MIT"
+      },
+      "npm_registry_url": "https://registry.npmjs.org/react-clock",
+      "reviewed_source_urls": [
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/LICENSE",
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/packages/react-clock/package.json",
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/packages/react-clock/src/Clock.css",
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/packages/react-clock/src/Clock.spec.tsx",
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/packages/react-clock/src/Clock.tsx",
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/packages/react-clock/src/Hand.tsx",
+        "https://github.com/wojtekmaj/react-clock/blob/403d393aa5b4d40eeb8128e55d0dc309f6843406/packages/react-clock/src/Mark.tsx"
+      ],
+      "metadata_api_url": "https://api.github.com/repos/wojtekmaj/react-clock",
+      "latest_commit_api_url": "https://api.github.com/repos/wojtekmaj/react-clock/commits?per_page=1"
+    },
+    {
+      "repository": "brillout/clocktab",
+      "repository_url": "https://github.com/brillout/clocktab",
+      "retrieved_at_utc": "2026-10-10T02:11:58.899577+00:00",
+      "created_at_utc": "2020-02-19T13:16:50Z",
+      "stars": 60,
+      "default_branch": "master",
+      "archived": false,
+      "latest_default_branch_commit": {
+        "sha": "16f270ac91c2bff138df0f02af66848944105077",
+        "committer_date_utc": "2023-03-11T19:02:33Z",
+        "message": "download background images from imgur",
+        "url": "https://github.com/brillout/clocktab/commit/16f270ac91c2bff138df0f02af66848944105077"
+      },
+      "pushed_at_utc": "2023-03-11T19:03:32Z",
+      "license": null,
+      "license_urls": [],
+      "github_latest_release": null,
+      "npm_latest": null,
+      "npm_registry_url": null,
+      "reviewed_source_urls": [
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/.gitmodules",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/goldpage.config.js",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/package.json",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/readme.md",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/views/BigText/get_max_font_size.js",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/views/ClockPage/ClockView.js",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/views/ClockPage/js/PRESETS.js",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/views/ClockPage/js/init_clock_options.js",
+        "https://github.com/brillout/clocktab/blob/16f270ac91c2bff138df0f02af66848944105077/views/ClockPage/js/load_clock.ts"
+      ],
+      "metadata_api_url": "https://api.github.com/repos/brillout/clocktab",
+      "latest_commit_api_url": "https://api.github.com/repos/brillout/clocktab/commits?per_page=1"
+    },
+    {
+      "repository": "Wandmalfarbe/evangelion-clock-screensaver",
+      "repository_url": "https://github.com/Wandmalfarbe/evangelion-clock-screensaver",
+      "retrieved_at_utc": "2026-10-10T02:22:33.163450+00:00",
+      "created_at_utc": "2018-08-11T17:43:27Z",
+      "stars": 597,
+      "default_branch": "master",
+      "archived": false,
+      "latest_default_branch_commit": {
+        "sha": "5c66f2e92b5a4a14ab83f05462234d60cb9a563c",
+        "committer_date_utc": "2025-06-29T12:33:19Z",
+        "message": "Bump ws from 7.5.7 to 7.5.10 (#37)\n\nBumps [ws](https://github.com/websockets/ws) from 7.5.7 to 7.5.10.\n- [Release notes](https://github.com/websockets/ws/releases)\n- [Commits](https://github.com/websockets/ws/compare/7.5.7...7.5.10)\n\n---\nupdated-dependencies:\n- dependency-name: ws\n  dependency-version: 7.5.10\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/commit/5c66f2e92b5a4a14ab83f05462234d60cb9a563c"
+      },
+      "pushed_at_utc": "2026-01-21T23:46:04Z",
+      "license": "BSD-3-Clause",
+      "license_urls": [
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/LICENSE"
+      ],
+      "github_latest_release": {
+        "tag": "v.1.1.2",
+        "published_at_utc": "2022-04-16T16:47:09Z",
+        "url": "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/releases/tag/v.1.1.2"
+      },
+      "npm_latest": null,
+      "npm_registry_url": null,
+      "reviewed_source_urls": [
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/Gruntfile.js",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/LICENSE",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/README.md",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/package.json",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/webview/ds-digital/DIGITAL.TXT",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/webview/html-template.html",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/webview/script.js",
+        "https://github.com/Wandmalfarbe/evangelion-clock-screensaver/blob/5c66f2e92b5a4a14ab83f05462234d60cb9a563c/webview/style.css"
+      ],
+      "metadata_api_url": "https://api.github.com/repos/Wandmalfarbe/evangelion-clock-screensaver",
+      "latest_commit_api_url": "https://api.github.com/repos/Wandmalfarbe/evangelion-clock-screensaver/commits?per_page=1"
+    }
+  ],
+  "local_clock": {
+    "file": "fliqlo.html",
+    "bytes": 39222,
+    "sha256": "0c572fd4814643a979aeb2d6e69914f7be6e2f9130c387971cc2a8e9c8a07b8b",
+    "unchanged": true
+  },
+  "supporting_documentation": [
+    "https://docs.astro.build/en/guides/deploy/github/",
+    "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API",
+    "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe",
+    "https://tailwindcss.com/docs/installation/play-cdn"
+  ]
+}

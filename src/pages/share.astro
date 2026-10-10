@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ClockCard from '../components/ClockCard.astro';
+import Icon from '../components/Icon.astro';
+import clocks from '../data/clocks.json';
+import { path } from '../lib/paths';
+---
+<Layout title="分享的收藏 — Still 时刻" page="share"><section class="collection-page container"><div class="section-heading"><div><p class="eyebrow">A COLLECTION SHARED WITH YOU</p><h1>有人分享了这些时刻。</h1><p class="page-description">这是一份收藏快照，导入后会合并到你的本地收藏。</p></div><button class="button button-primary" id="import-collection" hidden><Icon name="heart" size={18} />导入我的收藏</button></div><p id="share-message" role="status" class="share-message"></p><p class="result-count" id="result-count" role="status"></p><div class="clock-grid" id="clock-grid">{clocks.map(clock => <ClockCard clock={clock} hidden />)}</div><div id="empty-state" class="empty-state" hidden><h2>没有可显示的时钟</h2><p>分享链接可能有误，或时钟已不在画廊中。</p><a href={path()} class="button button-primary">浏览时钟画廊</a></div><noscript><p>请启用 JavaScript 来读取分享收藏。</p></noscript></section></Layout>
