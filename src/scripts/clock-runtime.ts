@@ -1,30 +1,71 @@
 import { timeParts } from '../lib/time.mjs';
+import languages from '../data/languages.json';
+import { getLanguage, saveLanguage, isLanguage, LANGUAGE_KEY, type Language } from '../lib/language';
 declare const FLIP_CLOCK: boolean;
 
+type Message = 'storageError' | 'fullscreenError' | 'wakeError';
 const id = document.body.dataset.clock!;
 const storageKey = `clock-gallery:fliqlo:settings:${id}:v1`;
 let twentyFour = true;
 let seconds = true;
-try { const saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); twentyFour = saved.twentyFour !== false; seconds = saved.seconds !== false; } catch { /* Clock works without storage. */ }
+let language: Language = 'zh-CN';
+try {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+  twentyFour = saved.twentyFour !== false; seconds = saved.seconds !== false;
+  if (isLanguage(saved.language)) language = saved.language;
+} catch { /* Clock works without storage. */ }
+language = getLanguage(language);
+saveLanguage(language);
 const display = document.querySelector<HTMLElement>('#clock')!;
 const dateLabel = document.querySelector<HTMLElement>('#date')!;
 const periodLabel = document.querySelector<HTMLElement>('#period')!;
 const readable = document.querySelector<HTMLElement>('#readable-time')!;
+const nameLabel = document.querySelector<HTMLElement>('#clock-name')!;
 const formatButton = document.querySelector<HTMLButtonElement>('#format')!;
 const secondsButton = document.querySelector<HTMLButtonElement>('#seconds')!;
+const languageSelect = document.querySelector<HTMLSelectElement>('#language')!;
+const controls = document.querySelector<HTMLElement>('#clock-controls')!;
+const toolbar = document.querySelector<HTMLElement>('#clock-toolbar')!;
 const status = document.querySelector<HTMLElement>('#status')!;
-const dateFormat = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+const fullscreen = document.querySelector<HTMLButtonElement>('#fullscreen')!;
+const wakeButton = document.querySelector<HTMLButtonElement>('#wake')!;
+const wakeSupported = 'wakeLock' in navigator;
+let message: Message | undefined;
+let dateFormat = makeDateFormat();
 let flip: { unmount: () => unknown } | undefined;
 let flipFace: { value: { value: string } } | undefined;
+let wakeRequested = false;
+let wakeLock: WakeLockSentinel | undefined;
+
+function makeDateFormat() { return new Intl.DateTimeFormat(language, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }); }
+function renderControls() {
+  const copy = languages[language];
+  document.documentElement.lang = language;
+  document.title = `${document.body.dataset.name} — Still${language === 'zh-CN' ? ' 时刻' : ''}`;
+  languageSelect.value = language;
+  languageSelect.setAttribute('aria-label', copy.language);
+  toolbar.setAttribute('aria-label', copy.settings);
+  nameLabel.textContent = `${document.body.dataset.name!.toUpperCase()} / ${copy.subtitles[id as keyof typeof copy.subtitles]}`;
+  formatButton.textContent = twentyFour ? copy.format24 : copy.format12;
+  formatButton.setAttribute('aria-pressed', String(twentyFour));
+  secondsButton.textContent = seconds ? copy.secondsOn : copy.secondsOff;
+  secondsButton.setAttribute('aria-pressed', String(seconds));
+  fullscreen.textContent = document.fullscreenElement ? copy.exitFullscreen : copy.fullscreen;
+  fullscreen.setAttribute('aria-pressed', String(Boolean(document.fullscreenElement)));
+  const awake = Boolean(wakeLock && !wakeLock.released);
+  wakeButton.disabled = !wakeSupported;
+  wakeButton.textContent = !wakeSupported ? copy.wakeUnavailable : awake ? copy.wakeOn : copy.wakeOff;
+  wakeButton.setAttribute('aria-pressed', String(awake));
+  status.textContent = message ? copy[message] : '';
+}
 
 async function mountFlip() {
   if (FLIP_CLOCK) {
-  const { flipClock, clock, theme, css } = await import('flipclock');
-  // The library's default face uses elapsed time. Feed wall-clock time each tick
-  // so returning from sleep or changing the system clock never leaves it behind.
-  flipFace = clock({ format: seconds ? '[HH]:[mm]:[ss]' : '[HH]:[mm]' });
-  flip = flipClock({ parent: display, autoStart: false, face: flipFace as ReturnType<typeof clock>, theme: theme({ dividers: ':', css: css({ fontSize: 'clamp(30px, 9vw, 120px)' }) }) });
-  render();
+    const { flipClock, clock, theme, css } = await import('flipclock');
+    // Feed wall-clock time each tick, including after sleep or a system clock change.
+    flipFace = clock({ format: seconds ? '[HH]:[mm]:[ss]' : '[HH]:[mm]' });
+    flip = flipClock({ parent: display, autoStart: false, face: flipFace as ReturnType<typeof clock>, theme: theme({ dividers: ':', css: css({ fontSize: 'clamp(30px, 9vw, 120px)' }) }) });
+    render();
   }
 }
 
@@ -45,46 +86,76 @@ function render() {
     secondHand.style.display = seconds ? '' : 'none';
   } else { display.textContent = time; }
   document.body.classList.toggle('without-seconds', !seconds);
-  formatButton.textContent = twentyFour ? '24 小时' : '12 小时';
-  formatButton.setAttribute('aria-pressed', String(twentyFour));
-  secondsButton.textContent = seconds ? '显示秒：开' : '显示秒：关';
-  secondsButton.setAttribute('aria-pressed', String(seconds));
   const zone = document.querySelector('#timezone');
   if (zone) zone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-function persist() { try { localStorage.setItem(storageKey, JSON.stringify({ twentyFour, seconds })); } catch { status.textContent = '设置仅在本次打开期间生效。'; } }
+function persist() {
+  try { localStorage.setItem(storageKey, JSON.stringify({ twentyFour, seconds, language })); }
+  catch { message = 'storageError'; }
+  if (!saveLanguage(language)) message = 'storageError';
+  renderControls();
+}
 formatButton.addEventListener('click', () => { twentyFour = !twentyFour; persist(); render(); });
 secondsButton.addEventListener('click', async () => { seconds = !seconds; persist(); if (id === 'flip-minimal') { flip?.unmount(); display.replaceChildren(); await mountFlip(); } render(); });
-if (id === 'orbit') formatButton.hidden = true;
-if (id === 'flip-minimal') void mountFlip();
-render();
-let tick: ReturnType<typeof setTimeout>;
-function schedule() { clearTimeout(tick); render(); if (!document.hidden) tick = setTimeout(schedule, 1000 - Date.now() % 1000 + 5); }
-schedule();
-
-const fullscreen = document.querySelector<HTMLButtonElement>('#fullscreen')!;
-fullscreen.addEventListener('click', async () => {
-  try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }
-  catch { status.textContent = '浏览器未允许全屏，可使用浏览器的全屏菜单。'; }
+function changeLanguage(value: Language) {
+  language = value; dateFormat = makeDateFormat(); persist(); render();
+  const url = new URL(location.href); url.searchParams.set('lang', language); history.replaceState(null, '', url);
+}
+languageSelect.addEventListener('change', () => {
+  if (!isLanguage(languageSelect.value)) return;
+  changeLanguage(languageSelect.value);
+  if (!keyboardInteraction) languageSelect.blur();
+  resetIdleTimer();
 });
-document.addEventListener('fullscreenchange', () => { fullscreen.textContent = document.fullscreenElement ? '退出全屏' : '全屏'; });
-const wakeButton = document.querySelector<HTMLButtonElement>('#wake')!;
-let wakeRequested = false;
-let wakeLock: WakeLockSentinel | undefined;
-if (!('wakeLock' in navigator)) { wakeButton.disabled = true; wakeButton.textContent = '常亮暂不可用'; }
+window.addEventListener('storage', event => { if (event.key === LANGUAGE_KEY && isLanguage(event.newValue)) changeLanguage(event.newValue); });
+if (id === 'orbit') formatButton.hidden = true;
+
+let idleTimer: ReturnType<typeof setTimeout>;
+let keyboardInteraction = false;
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  document.body.classList.remove('is-idle');
+  if (document.hidden) return;
+  idleTimer = setTimeout(() => {
+    // Keep keyboard focus and an open language picker visible.
+    if (controls.contains(document.activeElement) && (keyboardInteraction || document.activeElement === languageSelect)) return;
+    document.body.classList.add('is-idle');
+  }, 3000);
+}
+window.addEventListener('mousemove', resetIdleTimer, { passive: true });
+window.addEventListener('pointerdown', () => { keyboardInteraction = false; resetIdleTimer(); }, { passive: true });
+window.addEventListener('touchstart', () => { keyboardInteraction = false; resetIdleTimer(); }, { passive: true });
+window.addEventListener('keydown', event => {
+  keyboardInteraction = true; resetIdleTimer();
+  if (event.target instanceof HTMLElement && event.target.matches('input, select, textarea, [contenteditable]')) return;
+  if (event.key.toLowerCase() === 'f' && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) { event.preventDefault(); void toggleFullscreen(); }
+});
+controls.addEventListener('focusin', resetIdleTimer);
+controls.addEventListener('focusout', resetIdleTimer);
+
+async function toggleFullscreen() {
+  try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }
+  catch { message = 'fullscreenError'; renderControls(); }
+}
+fullscreen.addEventListener('click', () => { void toggleFullscreen(); });
+document.addEventListener('fullscreenchange', () => { renderControls(); resetIdleTimer(); });
 async function acquireWake() {
   try {
     wakeLock = await navigator.wakeLock.request('screen');
-    wakeButton.textContent = '屏幕常亮：开';
-    wakeButton.setAttribute('aria-pressed', 'true');
-    wakeLock.addEventListener('release', () => { wakeButton.textContent = '屏幕常亮：关'; wakeButton.setAttribute('aria-pressed', 'false'); });
-  } catch { wakeRequested = false; status.textContent = '当前环境未允许屏幕常亮。'; }
+    renderControls();
+    wakeLock.addEventListener('release', renderControls);
+  } catch { wakeRequested = false; message = 'wakeError'; renderControls(); }
 }
 wakeButton.addEventListener('click', async () => {
   wakeRequested = !wakeRequested;
-  if (wakeRequested) await acquireWake(); else { await wakeLock?.release(); wakeLock = undefined; }
+  if (wakeRequested) await acquireWake(); else { await wakeLock?.release(); wakeLock = undefined; renderControls(); }
 });
-document.addEventListener('visibilitychange', () => { schedule(); if (!document.hidden && wakeRequested) void acquireWake(); });
-window.addEventListener('pageshow', schedule);
-window.addEventListener('pagehide', () => { clearTimeout(tick); flip?.unmount(); void wakeLock?.release(); });
+
+let tick: ReturnType<typeof setTimeout>;
+function schedule() { clearTimeout(tick); render(); if (!document.hidden) tick = setTimeout(schedule, 1000 - Date.now() % 1000 + 5); }
+document.addEventListener('visibilitychange', () => { schedule(); resetIdleTimer(); if (!document.hidden && wakeRequested) void acquireWake(); });
+window.addEventListener('pageshow', () => { schedule(); resetIdleTimer(); });
+window.addEventListener('pagehide', () => { clearTimeout(tick); clearTimeout(idleTimer); flip?.unmount(); void wakeLock?.release(); });
 window.addEventListener('pageshow', event => { if (event.persisted && id === 'flip-minimal') { display.replaceChildren(); void mountFlip(); } });
+if (id === 'flip-minimal') void mountFlip();
+renderControls(); schedule(); resetIdleTimer();

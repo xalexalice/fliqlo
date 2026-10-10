@@ -2,4 +2,4 @@
 import Layout from '../layouts/Layout.astro';
 import { path } from '../lib/paths';
 ---
-<Layout title="这一刻走丢了 — Still 时刻"><section class="empty-state container"><p class="eyebrow">404 / LOST IN TIME</p><h1>这一刻走丢了。</h1><p>回到画廊，找到下一款喜欢的时钟。</p><a href={path()} class="button button-primary">返回画廊</a></section></Layout>
+<Layout title="这一刻走丢了 — Still 时刻" page="notfound"><section class="empty-state container"><p class="eyebrow" data-i18n="notfound.eyebrow">404 / LOST IN TIME</p><h1 data-i18n="notfound.title">这一刻走丢了。</h1><p data-i18n="notfound.description">回到画廊，找到下一款喜欢的时钟。</p><a href={path()} class="button button-primary" data-i18n="notfound.back">返回画廊</a></section></Layout>

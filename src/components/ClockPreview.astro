@@ -5,7 +5,7 @@ const { style, large = false } = Astro.props;
 <div class:list={['clock-preview', `preview-${style}`, { 'preview-large': large }]} aria-hidden="true">
   {style === 'flip' ? <>
     <div class="flip-display"><span class="flip-tile">1</span><span class="flip-tile">0</span><b>:</b><span class="flip-tile">2</span><span class="flip-tile">4</span></div>
-    <span class="preview-caption">FRIDAY, OCTOBER 9</span>
+    <span class="preview-caption" data-preview-date>FRIDAY, OCTOBER 9</span>
   </> : style === 'orbit' ? <>
     <svg class="analog-preview" viewBox="0 0 240 240">
       <circle cx="120" cy="120" r="106" class="dial-edge" />
@@ -16,10 +16,10 @@ const { style, large = false } = Astro.props;
       <circle cx="120" cy="120" r="4" fill="#e5ab7b" />
     </svg>
   </> : style === 'terminal' ? <>
-    <span class="terminal-label">LOCAL TIME / SYSTEM ONLINE</span><span class="preview-time">10:24<span class="preview-seconds">:08</span></span><span class="preview-caption">FRI · OCT 09 · UTC+08:00</span>
+    <span class="terminal-label" data-i18n="preview.terminal">LOCAL TIME / SYSTEM ONLINE</span><span class="preview-time">10:24<span class="preview-seconds">:08</span></span><span class="preview-caption" data-preview-date>FRI · OCT 09 · UTC+08:00</span>
   </> : style === 'dawn' ? <>
-    <span class="dawn-label">a little time for yourself</span><span class="preview-time">10:24</span><span class="preview-caption">Friday, October 9</span>
+    <span class="dawn-label" data-i18n="preview.dawn">a little time for yourself</span><span class="preview-time">10:24</span><span class="preview-caption" data-preview-date>Friday, October 9</span>
   </> : <>
-    <span class="preview-caption">{style === 'aesthetic' ? 'FRIDAY, OCTOBER 9' : 'THE PRESENT MOMENT'}</span><span class="preview-time">10<span class="time-colon">:</span>24</span><span class="preview-caption">{style === 'aesthetic' ? 'stay in the moment' : '09 OCTOBER · FRIDAY'}</span>
+    <span class="preview-caption" data-preview-date={style === 'aesthetic' || undefined} data-i18n={style === 'aesthetic' ? undefined : 'preview.present'}>{style === 'aesthetic' ? 'FRIDAY, OCTOBER 9' : 'THE PRESENT MOMENT'}</span><span class="preview-time">10<span class="time-colon">:</span>24</span><span class="preview-caption" data-preview-date={style !== 'aesthetic' || undefined} data-i18n={style === 'aesthetic' ? 'preview.moment' : undefined}>{style === 'aesthetic' ? 'stay in the moment' : '09 OCTOBER · FRIDAY'}</span>
   </>}
 </div>

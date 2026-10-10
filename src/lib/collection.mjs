@@ -15,19 +15,19 @@ export function parseFavorites(raw, catalogue) {
 export function createShareHash(ids) {
   const unique = [...new Set(ids)];
   if (!unique.length || unique.length > MAX_SHARE_IDS || unique.some(id => !/^[a-z0-9-]+$/.test(id))) {
-    throw new Error('请选择 1–20 款时钟后分享。');
+    throw new Error('share.invalidSelection');
   }
   const hash = '#v=1&ids=' + unique.join(',');
-  if (hash.length > MAX_SHARE_LENGTH) throw new Error('分享链接过长。');
+  if (hash.length > MAX_SHARE_LENGTH) throw new Error('share.tooLong');
   return hash;
 }
 
 export function parseShareHash(hash, catalogue) {
-  if (hash.length > MAX_SHARE_LENGTH) return { ids: [], missing: [], error: '分享链接过长。' };
+  if (hash.length > MAX_SHARE_LENGTH) return { ids: [], missing: [], error: 'share.tooLong' };
   const params = new URLSearchParams(hash.replace(/^#/, ''));
   const values = [...new Set((params.get('ids') || '').split(',').filter(Boolean))];
   if (params.get('v') !== '1' || !values.length || values.length > MAX_SHARE_IDS || values.some(id => !/^[a-z0-9-]+$/.test(id))) {
-    return { ids: [], missing: [], error: '这个分享链接无效或版本暂不支持。' };
+    return { ids: [], missing: [], error: 'share.invalid' };
   }
   const ids = knownIds(values, catalogue);
   return { ids, missing: values.filter(id => !ids.includes(id)), error: '' };
