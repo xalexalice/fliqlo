@@ -1,0 +1,51 @@
+[
+  {
+    "id": "Fredoka",
+    "file": "Fredoka-Medium.ttf",
+    "format": "truetype",
+    "weight": "500",
+    "clocks": [
+      "bubble"
+    ],
+    "license": "licenses/Fredoka-OFL.txt",
+    "source": "https://github.com/ducafecat/flutter_tiqlo_clock/tree/0c01fbd76ade77f4efd55baa10cfa55fc5efd9a8/assets/fonts/bubble",
+    "sha256": "024bec999fd21bd237b2866ec5c9189a1522db63d88fb01aabafef8c5b4d6916"
+  },
+  {
+    "id": "Space Mono",
+    "file": "SpaceMono-Bold.ttf",
+    "format": "truetype",
+    "weight": "700",
+    "clocks": [
+      "aura"
+    ],
+    "license": "licenses/SpaceMono-OFL.txt",
+    "source": "https://github.com/google/fonts/tree/main/ofl/spacemono",
+    "sha256": "405e73d41afb7e5906efce206a326af5c956f38e255f35421c260e861e599c59"
+  },
+  {
+    "id": "Victor Mono",
+    "file": "VictorMono-Regular.woff",
+    "format": "woff",
+    "weight": "400",
+    "clocks": [
+      "rolling"
+    ],
+    "license": "licenses/VictorMono-OFL.txt",
+    "source": "https://github.com/den4md/Animated-Clock-Wallpaper/tree/305495932d2ff1f5ff3b3224cd4ee7d77722b88c/fonts",
+    "sha256": "a2dfb1d57316e9919ab9bcfe4fb56c47f85689d449954b7f1b0ad1c6e6bc3ad5"
+  },
+  {
+    "id": "DSEG7",
+    "file": "DSEG7Classic-Regular.woff2",
+    "format": "woff2",
+    "weight": "400",
+    "clocks": [
+      "nixie"
+    ],
+    "license": "licenses/DSEG-OFL.txt",
+    "source": "https://github.com/keshikan/DSEG/releases/tag/v0.46",
+    "package": "dseg@0.46.0",
+    "sha256": "8a61b7dbc89367dbc0face2541ed69a2bf0cc05b23d1064f670284ab61044481"
+  }
+]

@@ -1,3 +1,4 @@
+import catalogue from '../../src/data/clocks.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -7,15 +8,15 @@ import { createHash } from 'node:crypto';
 test('search, categories, empty state, favourites, share and explicit import', async ({ page, context }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await page.goto('./');
-  await expect(page.locator('[data-clock-id]:visible')).toHaveCount(6);
+  await expect(page.locator('[data-clock-id]:visible')).toHaveCount(14);
   await page.getByRole('button', { name: '指针', exact: true }).click();
-  await expect(page.locator('[data-clock-id]:visible')).toHaveCount(1);
+  await expect(page.locator('[data-clock-id]:visible')).toHaveCount(5);
   await page.getByRole('button', { name: '全部', exact: true }).click();
   await page.getByRole('searchbox').fill('NOT-A-CLOCK');
   await expect(page.locator('#empty-state')).toBeVisible();
   await page.getByRole('button', { name: '查看全部时钟' }).click();
   await page.getByRole('searchbox').fill('浅色');
-  await expect(page.locator('[data-clock-id]:visible')).toHaveCount(2);
+  await expect(page.locator('[data-clock-id]:visible')).toHaveCount(5);
   await page.getByRole('searchbox').fill('');
   await page.getByRole('button', { name: '收藏 Orbit', exact: true }).click();
   await page.getByRole('button', { name: '收藏 Classic Flip', exact: true }).click();
@@ -61,7 +62,7 @@ test('HTML download preserves the original bytes', async ({ page }) => {
   expect(await readFile((await enhanced.path())!)).toEqual(await readFile('dist/standalone/fliqlo.html'));
 });
 
-for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
+for (const id of catalogue.filter(clock => clock.offline).map(clock => clock.id)) {
   test(`${id} runs as an offline local HTML and resynchronizes after a clock change`, async ({ page, context }) => {
     const external: string[] = [], errors: string[] = [];
     page.on('request', request => { if (/^https?:/.test(request.url())) external.push(request.url()); });
@@ -75,9 +76,9 @@ for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
     await page.clock.setSystemTime(new Date('2026-10-09T06:00:01Z'));
     await page.clock.runFor(1100);
     await expect(page.locator('#readable-time')).toHaveText('14:00:02');
-    if (id !== 'orbit') { await page.locator('#format').click(); await expect(page.locator('#readable-time')).toHaveText('02:00:02 PM'); }
+    if (!['orbit', 'station', 'neumorphic', 'roman', 'chronograph'].includes(id)) { await page.locator('#format').click(); await expect(page.locator('#readable-time')).toHaveText('02:00:02 PM'); }
     await page.locator('#seconds').click();
-    await expect(page.locator('#readable-time')).toHaveText(id === 'orbit' ? '14:00' : '02:00 PM');
+    await expect(page.locator('#readable-time')).toHaveText(['orbit', 'station', 'neumorphic', 'roman', 'chronograph'].includes(id) ? '14:00' : '02:00 PM');
     if (id === 'flip-minimal') await expect(page.locator('.flip-clock-card')).toHaveCount(4);
     await page.getByRole('button', { name: '全屏', exact: true }).click();
     await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(true);

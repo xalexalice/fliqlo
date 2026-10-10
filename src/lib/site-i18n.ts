@@ -31,6 +31,7 @@ function apply() {
   document.querySelectorAll<HTMLElement>('[data-clock-subtitle]').forEach(element => { element.textContent = subtitle(element.dataset.clockSubtitle!); });
   const previewDate = new Intl.DateTimeFormat(language, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date(2026, 9, 9));
   document.querySelectorAll<HTMLElement>('[data-preview-date]').forEach(element => { element.textContent = previewDate; });
+  document.querySelectorAll<HTMLElement>('[data-preview-weekday]').forEach(element => { element.textContent = new Intl.DateTimeFormat(language, { weekday: 'long' }).format(new Date(2026, 9, 9)); });
   const page = document.body.dataset.page!;
   const clock = document.body.dataset.detailClock;
   document.title = clock ? `${document.body.dataset.detailName} — Still${language === 'zh-CN' ? ' 时刻' : ''}` : t(`meta.${page === 'gallery' ? 'home' : page}`);

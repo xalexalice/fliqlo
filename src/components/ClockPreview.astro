@@ -1,9 +1,13 @@
 ---
 interface Props { style: string; large?: boolean }
+import { clockFaceMarkup, addedFaces } from '../lib/clock-faces.mjs';
+import nixieMarkup from '../lib/nixie-markup.html?raw';
+import '../styles/clock-faces.css';
+import '../styles/nixie.css';
 const { style, large = false } = Astro.props;
 ---
 <div class:list={['clock-preview', `preview-${style}`, { 'preview-large': large }]} aria-hidden="true">
-  {style === 'flip' ? <>
+  {addedFaces.includes(style) ? <Fragment set:html={style === 'nixie' ? nixieMarkup : clockFaceMarkup(style)} /> : style === 'flip' ? <>
     <div class="flip-display"><span class="flip-tile">1</span><span class="flip-tile">0</span><b>:</b><span class="flip-tile">2</span><span class="flip-tile">4</span></div>
     <span class="preview-caption" data-preview-date>FRIDAY, OCTOBER 9</span>
   </> : style === 'orbit' ? <>

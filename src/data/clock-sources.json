@@ -1,0 +1,66 @@
+[
+  {
+    "id": "d3clock",
+    "clocks": [
+      "station"
+    ],
+    "repository": "danielpradilla/d3clock",
+    "revision": "b9ccecb65901d9773f7571fb89410476dfa0459b",
+    "license": "licenses/d3clock-MIT.txt"
+  },
+  {
+    "id": "neumorphic",
+    "clocks": [
+      "neumorphic"
+    ],
+    "repository": "RayJason/Neumorphism_Clock",
+    "revision": "5f4bbd31593de36da8a248a31152d8ba82bacf28",
+    "license": "licenses/neumorphic-MIT.txt"
+  },
+  {
+    "id": "orbit-kit",
+    "clocks": [
+      "roman",
+      "chronograph"
+    ],
+    "repository": "zumerlab/orbit-kit",
+    "revision": "59b869f084cfcda8572841600193edf425f9c6f9",
+    "license": "licenses/orbit-kit-MIT.txt"
+  },
+  {
+    "id": "aura",
+    "clocks": [
+      "aura"
+    ],
+    "repository": "anoopxa/Digital-clock",
+    "revision": "f5e7a13ec713e3ae32e7f812ed1fc219908d4d35",
+    "license": "licenses/aura-MIT.txt"
+  },
+  {
+    "id": "rolling",
+    "clocks": [
+      "rolling"
+    ],
+    "repository": "den4md/Animated-Clock-Wallpaper",
+    "revision": "305495932d2ff1f5ff3b3224cd4ee7d77722b88c",
+    "license": "licenses/rolling-MIT.txt"
+  },
+  {
+    "id": "tiqlo",
+    "clocks": [
+      "bubble"
+    ],
+    "repository": "ducafecat/flutter_tiqlo_clock",
+    "revision": "0c01fbd76ade77f4efd55baa10cfa55fc5efd9a8",
+    "license": "licenses/tiqlo-MIT.txt"
+  },
+  {
+    "id": "nixie",
+    "clocks": [
+      "nixie"
+    ],
+    "repository": "rajtilak-2020/Nixie-Tube-Clock",
+    "revision": "7f7acc75e28b83f0f1cbcb4376ae3f3f8f362b15",
+    "license": "licenses/nixie-MIT.txt"
+  }
+]

@@ -1,3 +1,4 @@
+import catalogue from '../../src/data/clocks.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -29,7 +30,7 @@ test('both clock shortcuts also appear below the gallery and open their HTML pag
   await expect(links.getByRole('link')).toHaveCount(2);
 });
 
-for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
+for (const id of catalogue.filter(clock => clock.offline).map(clock => clock.id)) {
   test(`${id}: seven languages persist in offline HTML, including dates and fullscreen labels`, async ({ page, context }) => {
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
     await context.setOffline(true);
@@ -42,7 +43,7 @@ for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
       await expect(page.locator('#fullscreen')).toHaveText(fullscreen);
       await expect(page.locator('#seconds')).toHaveText(seconds);
       await expect(page.locator('#date')).toContainText(weekday);
-      if (locale !== 'zh-CN') await expect(page.locator('#clock-name')).not.toContainText(/[\u4e00-\u9fff]{3,}/);
+      if (!['zh-CN', 'ja-JP'].includes(locale)) await expect(page.locator('#clock-name')).not.toContainText(/[\u4e00-\u9fff]{3,}/);
     }
     await page.locator('#language').selectOption('en-US');
     await page.locator('#fullscreen').click();
@@ -97,7 +98,7 @@ for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
 
 test('all languages fit on small screens', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
-  for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
+  for (const id of catalogue.filter(clock => clock.offline).map(clock => clock.id)) {
     await page.goto(pathToFileURL(resolve(`dist/standalone/${id}.html`)).href);
     for (const [locale] of locales) {
       await page.locator('#language').selectOption(locale);

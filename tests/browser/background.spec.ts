@@ -1,3 +1,4 @@
+import catalogue from '../../src/data/clocks.json' with { type: 'json' };
 import { test, expect, type Page } from '@playwright/test';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -15,7 +16,7 @@ async function openClock(page: Page, id: string) {
   if (id === 'fliqlo') await page.addStyleTag({content:'#settings-drawer.opacity-0{opacity:0}#settings-drawer.pointer-events-none{pointer-events:none}'});
 }
 
-for (const id of ['flip-minimal', 'fliqlo', 'orbit', 'mono', 'dawn', 'terminal']) {
+for (const id of catalogue.map(clock => clock.id)) {
   test(`${id}: local image and looping video backgrounds work in HTML, idle and fullscreen`, async ({ page, context }) => {
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
     const uploads: string[] = []; page.on('request', request => { if (request.method() === 'POST') uploads.push(request.url()); });
@@ -65,7 +66,7 @@ for (const id of ['flip-minimal', 'fliqlo', 'orbit', 'mono', 'dawn', 'terminal']
 
 test('background dialog and errors translate on all clocks and fit on a 320px screen', async ({ page }) => {
   await page.setViewportSize({width:320, height:568});
-  for (const id of ['flip-minimal', 'fliqlo', 'orbit', 'mono', 'dawn', 'terminal']) {
+  for (const id of catalogue.map(clock => clock.id)) {
     await openClock(page, id);
     for (let i=0; i<locales.length; i++) {
       await page.locator(id === 'fliqlo' ? '#select-lang' : '#language').evaluate((select: HTMLSelectElement, locale) => {select.value=locale; select.dispatchEvent(new Event('change'));}, locales[i]);

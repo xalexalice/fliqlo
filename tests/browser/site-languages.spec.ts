@@ -1,3 +1,4 @@
+import catalogue from '../../src/data/clocks.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 
 const cases = [
@@ -19,10 +20,10 @@ for (const entry of cases) {
     await expect(page.locator('.site-header nav a').first()).toHaveText(entry.gallery);
     await expect(page.locator('[data-clock-subtitle="orbit"]')).toHaveText(entry.subtitle);
     await page.locator('#clock-search').fill(entry.light);
-    await expect(page.locator('[data-clock-id]:visible')).toHaveCount(2);
+    await expect(page.locator('[data-clock-id]:visible')).toHaveCount(5);
     await page.locator('#clock-search').fill('');
     await page.getByRole('button', { name: entry.analog, exact: true }).click();
-    await expect(page.locator('[data-clock-id]:visible')).toHaveCount(1);
+    await expect(page.locator('[data-clock-id]:visible')).toHaveCount(5);
     await page.locator('[data-favorite="orbit"]').click();
     await page.locator('.site-header nav').getByRole('link', { name: entry.favorites }).click();
     await expect(page.locator('#site-language')).toHaveValue(entry.locale);
@@ -74,7 +75,7 @@ test('language travels with shared links, translates feedback and bridges to the
 test('all pages fit at 320px in every language, with translated text and metadata', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
-  const routes = ['./', 'favorites/', 'share/#v=1&ids=orbit', 'submit/', '404.html', ...['flip-minimal', 'fliqlo', 'orbit', 'mono', 'dawn', 'terminal'].map(id => `clocks/${id}/`)];
+  const routes = ['./', 'favorites/', 'share/#v=1&ids=orbit', 'submit/', '404.html', ...catalogue.map(clock => clock.id).map(id => `clocks/${id}/`)];
   for (const entry of cases) {
     for (const route of routes) {
       const url = new URL(route, 'http://127.0.0.1:4321/fliqlo/'); url.searchParams.set('lang', entry.locale);

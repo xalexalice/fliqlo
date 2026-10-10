@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 
 const site = JSON.parse(await readFile(new URL('../src/data/site-languages.json', import.meta.url), 'utf8'));
 const clocks = JSON.parse(await readFile(new URL('../src/data/languages.json', import.meta.url), 'utf8'));
+const catalogue = JSON.parse(await readFile(new URL('../src/data/clocks.json', import.meta.url), 'utf8'));
 
 test('all seven site languages cover every message and retain substitution fields', () => {
   assert.deepEqual(Object.keys(site).sort(), Object.keys(clocks).sort());
@@ -24,5 +25,14 @@ test('background controls and feedback cover all seven clock languages', () => {
   for (const [locale, copy] of Object.entries(clocks)) {
     assert.deepEqual(Object.keys(copy.background).sort(), keys, locale);
     for (const [key, value] of Object.entries(copy.background)) assert(value.trim(), `${locale}: background.${key}`);
+  }
+});
+
+test('every catalogue clock has descriptions and offline titles in all languages', () => {
+  for (const [locale, copy] of Object.entries(clocks)) {
+    for (const clock of catalogue) {
+      assert(site[locale][`clock.description.${clock.id}`]?.trim(), `${locale}: ${clock.id} description`);
+      if (clock.offline) assert(copy.subtitles[clock.id]?.trim(), `${locale}: ${clock.id} subtitle`);
+    }
   }
 });

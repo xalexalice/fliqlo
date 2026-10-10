@@ -14,6 +14,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#111714" /><title>{title}</title><meta name="description" content={description} />
     <link rel="canonical" href={canonical} /><link rel="icon" type="image/png" href={path('assets/logo.png')} />
+    <link rel="stylesheet" href={path('assets/clock-fonts.css')} />
     <meta property="og:type" content="website" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={new URL(path('assets/logo.png'), Astro.site)} />
   </head>
   <body data-page={page} data-detail-clock={clock?.id} data-detail-name={clock?.name}>

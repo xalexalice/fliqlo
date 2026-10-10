@@ -2,6 +2,8 @@ import { timeParts } from '../lib/time.mjs';
 import languages from '../data/languages.json';
 import { getLanguage, saveLanguage, isLanguage, LANGUAGE_KEY, type Language } from '../lib/language';
 import { mountBackground } from './clock-background';
+import { renderClockFace } from './clock-faces';
+import { analogFaces } from '../lib/clock-faces.mjs';
 declare const FLIP_CLOCK: boolean;
 
 type Message = 'storageError' | 'fullscreenError' | 'wakeError';
@@ -79,7 +81,7 @@ function render() {
   readable.textContent = `${time}${twentyFour ? '' : ` ${part.period}`}`;
   display.setAttribute('aria-label', readable.textContent);
   dateLabel.textContent = dateFormat.format(now);
-  periodLabel.textContent = twentyFour || id === 'orbit' ? '' : part.period;
+  periodLabel.textContent = twentyFour || id === 'orbit' || analogFaces.includes(id) ? '' : part.period;
   if (id === 'flip-minimal') { if (flipFace) flipFace.value.value = time; }
   else if (id === 'orbit') {
     document.querySelector('#hour-hand')!.setAttribute('transform', `rotate(${part.hourAngle} 120 120)`);
@@ -87,7 +89,7 @@ function render() {
     const secondHand = document.querySelector<SVGElement>('#second-hand')!;
     secondHand.setAttribute('transform', `rotate(${part.secondAngle} 120 120)`);
     secondHand.style.display = seconds ? '' : 'none';
-  } else { display.textContent = time; }
+  } else if (!renderClockFace(display, id, now, part, seconds, language, twentyFour)) { display.textContent = time; }
   document.body.classList.toggle('without-seconds', !seconds);
   const zone = document.querySelector('#timezone');
   if (zone) zone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -111,7 +113,7 @@ languageSelect.addEventListener('change', () => {
   resetIdleTimer();
 });
 window.addEventListener('storage', event => { if (event.key === LANGUAGE_KEY && isLanguage(event.newValue)) changeLanguage(event.newValue); });
-if (id === 'orbit') formatButton.hidden = true;
+if (id === 'orbit' || analogFaces.includes(id)) formatButton.hidden = true;
 
 let idleTimer: ReturnType<typeof setTimeout>;
 let keyboardInteraction = false;
