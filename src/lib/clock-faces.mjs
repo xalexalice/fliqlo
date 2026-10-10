@@ -7,7 +7,7 @@ function ticks(radius, count = 60, cx = 120, cy = 120) {
 }
 function numerals(roman) {
   const labels = roman ? ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'] : ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
-  const radius = roman ? 82 : 91;
+  const radius = roman ? 74 : 91;
   return labels.map((label, i) => `<text x="${120 + Math.sin(i * Math.PI / 6) * radius}" y="${120 - Math.cos(i * Math.PI / 6) * radius}" text-anchor="middle" dominant-baseline="central" class="face-number">${label}</text>`).join('');
 }
 function hands(id) {

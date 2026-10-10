@@ -78,3 +78,19 @@ test('new gallery previews fit their cards at desktop and mobile sizes', async (
     }
   }
 });
+
+test('Roman numerals leave a clear gap before the major dial ticks', async ({ page, context }) => {
+  await context.setOffline(true);
+  for (const width of [1440, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(pathToFileURL(resolve('dist/standalone/roman.html')).href);
+    const numbers = page.locator('.face-roman .face-number');
+    const ticks = page.locator('.face-roman .face-major');
+    const rightNumber = await numbers.nth(3).boundingBox();
+    const rightTick = await ticks.nth(3).boundingBox();
+    const leftNumber = await numbers.nth(9).boundingBox();
+    const leftTick = await ticks.nth(9).boundingBox();
+    expect(rightTick!.x - (rightNumber!.x + rightNumber!.width)).toBeGreaterThan(2);
+    expect(leftNumber!.x - (leftTick!.x + leftTick!.width)).toBeGreaterThan(2);
+  }
+});
