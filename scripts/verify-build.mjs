@@ -8,8 +8,9 @@ const clocks = JSON.parse(await readFile('src/data/clocks.json', 'utf8'));
 for (const route of ['index.html', 'favorites/index.html', 'share/index.html', 'submit/index.html', '404.html']) await access(`dist/${route}`);
 for (const clock of clocks) {
   await access(`dist/clocks/${clock.id}/index.html`);
-  if (!clock.offline) continue;
   const html = await readFile(`dist/standalone/${clock.id}.html`, 'utf8');
+  assert(html.includes('background-open') && html.includes('background-dialog'), `${clock.id} is missing background controls.`);
+  if (!clock.offline) continue;
   assert(!/<(?:script|link|img|iframe)[^>]+(?:src|href)\s*=\s*["'][^"']+/i.test(html), `${clock.id} has an external resource.`);
   assert(!/\bimport\s*\(/.test(html), `${clock.id} has a runtime import.`);
   assert(html.includes('id="clock"'));

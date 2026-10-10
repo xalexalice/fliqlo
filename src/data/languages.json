@@ -5,6 +5,7 @@
     "wakeOn": "屏幕常亮：开", "wakeOff": "屏幕常亮：关", "wakeUnavailable": "常亮暂不可用",
     "fullscreen": "全屏", "exitFullscreen": "退出全屏",
     "storageError": "设置仅在本次打开期间生效。", "fullscreenError": "浏览器未允许全屏，可使用浏览器的全屏菜单。", "wakeError": "当前环境未允许屏幕常亮。",
+    "background": {"open": "背景", "title": "自定义背景", "choose": "选择图片或视频", "reset": "恢复默认", "close": "关闭", "play": "播放视频", "hint": "支持图片及浏览器兼容的 MP4 / WebM 视频。文件只在当前页面使用，不会上传；刷新后需重新选择。", "loading": "正在读取文件…", "imageReady": "图片背景已应用。", "videoReady": "视频背景已应用，静音循环播放。", "fileError": "无法读取此文件，请选择有效图片或浏览器支持的视频。", "playError": "浏览器暂未允许自动播放，请点击“播放视频”。"},
     "subtitles": { "flip-minimal": "独立翻页时钟", "orbit": "静谧指针", "mono": "纯粹数字", "dawn": "晨光纸面", "terminal": "荧光终端" }
   },
   "en-US": {
@@ -13,6 +14,7 @@
     "wakeOn": "Keep awake: on", "wakeOff": "Keep awake: off", "wakeUnavailable": "Keep awake unavailable",
     "fullscreen": "Fullscreen", "exitFullscreen": "Exit fullscreen",
     "storageError": "Settings apply only until this page is closed.", "fullscreenError": "Fullscreen was blocked. Try your browser’s fullscreen menu.", "wakeError": "Keeping the screen awake is unavailable here.",
+    "background": {"open": "Background", "title": "Custom background", "choose": "Choose image or video", "reset": "Restore default", "close": "Close", "play": "Play video", "hint": "Use an image or a browser-compatible MP4 / WebM video. Files stay on this page and are never uploaded. Choose again after reloading.", "loading": "Loading file…", "imageReady": "Image background applied.", "videoReady": "Video background applied; looping without sound.", "fileError": "This file could not be loaded. Choose a valid image or a video supported by your browser.", "playError": "Autoplay is blocked. Click “Play video” to start."},
     "subtitles": { "flip-minimal": "Independent flip clock", "orbit": "Quiet hands", "mono": "Pure digits", "dawn": "Morning light", "terminal": "Glowing terminal" }
   },
   "ja-JP": {
@@ -21,6 +23,7 @@
     "wakeOn": "画面点灯：オン", "wakeOff": "画面点灯：オフ", "wakeUnavailable": "画面点灯は利用不可",
     "fullscreen": "全画面", "exitFullscreen": "全画面を終了",
     "storageError": "設定はこのページを閉じるまで有効です。", "fullscreenError": "全画面表示が許可されませんでした。ブラウザーの全画面メニューをお試しください。", "wakeError": "この環境では画面の点灯を維持できません。",
+    "background": {"open": "背景", "title": "背景をカスタマイズ", "choose": "画像・動画を選択", "reset": "初期背景に戻す", "close": "閉じる", "play": "動画を再生", "hint": "画像またはブラウザー対応の MP4 / WebM 動画を選択。ファイルはこのページ内でのみ使用され、アップロードされません。再読み込み後は再選択が必要です。", "loading": "ファイルを読み込み中…", "imageReady": "画像の背景を適用しました。", "videoReady": "動画の背景を適用しました。無音でループ再生します。", "fileError": "読み込めません。有効な画像またはブラウザー対応の動画を選択してください。", "playError": "自動再生が許可されていません。「動画を再生」を押してください。"},
     "subtitles": { "flip-minimal": "フリップ時計", "orbit": "静かな針", "mono": "シンプルな数字", "dawn": "朝の光", "terminal": "光る端末" }
   },
   "ko-KR": {
@@ -29,6 +32,7 @@
     "wakeOn": "화면 유지: 켜짐", "wakeOff": "화면 유지: 꺼짐", "wakeUnavailable": "화면 유지 사용 불가",
     "fullscreen": "전체 화면", "exitFullscreen": "전체 화면 종료",
     "storageError": "설정은 이 페이지를 닫을 때까지 적용됩니다.", "fullscreenError": "전체 화면이 차단되었습니다. 브라우저의 전체 화면 메뉴를 사용해 보세요.", "wakeError": "이 환경에서는 화면을 켜 둔 상태로 유지할 수 없습니다.",
+    "background": {"open": "배경", "title": "사용자 지정 배경", "choose": "이미지 또는 동영상 선택", "reset": "기본 배경 복원", "close": "닫기", "play": "동영상 재생", "hint": "이미지 또는 브라우저가 지원하는 MP4 / WebM 동영상을 선택하세요. 파일은 현재 페이지에서만 사용되며 업로드되지 않습니다. 새로 고침 후 다시 선택하세요.", "loading": "파일 불러오는 중…", "imageReady": "이미지 배경이 적용되었습니다.", "videoReady": "동영상 배경이 적용되었습니다. 소리 없이 반복 재생됩니다.", "fileError": "파일을 불러올 수 없습니다. 유효한 이미지나 브라우저가 지원하는 동영상을 선택하세요.", "playError": "자동 재생이 차단되었습니다. “동영상 재생”을 눌러 시작하세요."},
     "subtitles": { "flip-minimal": "독립 플립 시계", "orbit": "고요한 시곗바늘", "mono": "순수한 숫자", "dawn": "아침 햇살", "terminal": "빛나는 터미널" }
   },
   "fr-FR": {
@@ -37,6 +41,7 @@
     "wakeOn": "Écran allumé : oui", "wakeOff": "Écran allumé : non", "wakeUnavailable": "Maintien de l’écran indisponible",
     "fullscreen": "Plein écran", "exitFullscreen": "Quitter le plein écran",
     "storageError": "Les réglages restent actifs jusqu’à la fermeture de cette page.", "fullscreenError": "Le plein écran a été bloqué. Essayez le menu plein écran du navigateur.", "wakeError": "Le maintien de l’écran allumé n’est pas disponible ici.",
+    "background": {"open": "Fond", "title": "Fond personnalisé", "choose": "Choisir une image ou vidéo", "reset": "Rétablir le fond", "close": "Fermer", "play": "Lire la vidéo", "hint": "Choisissez une image ou une vidéo MP4 / WebM compatible avec le navigateur. Les fichiers restent sur cette page, sans envoi. Sélectionnez-les de nouveau après rechargement.", "loading": "Chargement du fichier…", "imageReady": "Fond image appliqué.", "videoReady": "Fond vidéo appliqué, en boucle et sans son.", "fileError": "Impossible de charger ce fichier. Choisissez une image valide ou une vidéo compatible avec le navigateur.", "playError": "La lecture automatique est bloquée. Cliquez sur « Lire la vidéo »."},
     "subtitles": { "flip-minimal": "Horloge à volets autonome", "orbit": "Aiguilles paisibles", "mono": "Chiffres épurés", "dawn": "Lumière du matin", "terminal": "Terminal lumineux" }
   },
   "de-DE": {
@@ -45,6 +50,7 @@
     "wakeOn": "Bildschirm an: ein", "wakeOff": "Bildschirm an: aus", "wakeUnavailable": "Bildschirmaktivierung nicht verfügbar",
     "fullscreen": "Vollbild", "exitFullscreen": "Vollbild beenden",
     "storageError": "Die Einstellungen gelten bis zum Schließen dieser Seite.", "fullscreenError": "Vollbild wurde blockiert. Versuchen Sie das Vollbildmenü Ihres Browsers.", "wakeError": "Der Bildschirm kann hier nicht dauerhaft eingeschaltet bleiben.",
+    "background": {"open": "Hintergrund", "title": "Eigener Hintergrund", "choose": "Bild oder Video wählen", "reset": "Standard wiederherstellen", "close": "Schließen", "play": "Video abspielen", "hint": "Wählen Sie ein Bild oder ein browserkompatibles MP4-/WebM-Video. Dateien bleiben auf dieser Seite und werden nicht hochgeladen. Nach dem Neuladen erneut wählen.", "loading": "Datei wird geladen…", "imageReady": "Bildhintergrund angewendet.", "videoReady": "Videohintergrund läuft in Schleife ohne Ton.", "fileError": "Datei nicht lesbar. Wählen Sie ein gültiges Bild oder ein vom Browser unterstütztes Video.", "playError": "Automatische Wiedergabe blockiert. Klicken Sie auf „Video abspielen“."},
     "subtitles": { "flip-minimal": "Eigenständige Klappuhr", "orbit": "Ruhige Zeiger", "mono": "Klare Ziffern", "dawn": "Morgenlicht", "terminal": "Leuchtendes Terminal" }
   },
   "es-ES": {
@@ -53,6 +59,7 @@
     "wakeOn": "Pantalla activa: sí", "wakeOff": "Pantalla activa: no", "wakeUnavailable": "Pantalla activa no disponible",
     "fullscreen": "Pantalla completa", "exitFullscreen": "Salir de pantalla completa",
     "storageError": "Los ajustes se aplican hasta que se cierre esta página.", "fullscreenError": "La pantalla completa se ha bloqueado. Pruebe el menú de pantalla completa del navegador.", "wakeError": "No se puede mantener la pantalla encendida en este entorno.",
+    "background": {"open": "Fondo", "title": "Fondo personalizado", "choose": "Elegir imagen o vídeo", "reset": "Restaurar fondo", "close": "Cerrar", "play": "Reproducir vídeo", "hint": "Elige una imagen o un vídeo MP4 / WebM compatible con el navegador. Los archivos permanecen en esta página y no se suben. Vuelve a elegirlos al recargar.", "loading": "Cargando archivo…", "imageReady": "Fondo de imagen aplicado.", "videoReady": "Fondo de vídeo aplicado, en bucle y sin sonido.", "fileError": "No se pudo cargar este archivo. Elige una imagen válida o un vídeo compatible con tu navegador.", "playError": "La reproducción automática está bloqueada. Pulsa « Reproducir vídeo »."},
     "subtitles": { "flip-minimal": "Reloj de solapas independiente", "orbit": "Agujas tranquilas", "mono": "Dígitos puros", "dawn": "Luz de la mañana", "terminal": "Terminal luminoso" }
   }
 }

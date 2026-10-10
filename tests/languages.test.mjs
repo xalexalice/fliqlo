@@ -18,3 +18,11 @@ test('all seven site languages cover every message and retain substitution field
     }
   }
 });
+
+test('background controls and feedback cover all seven clock languages', () => {
+  const keys = Object.keys(clocks['zh-CN'].background).sort();
+  for (const [locale, copy] of Object.entries(clocks)) {
+    assert.deepEqual(Object.keys(copy.background).sort(), keys, locale);
+    for (const [key, value] of Object.entries(copy.background)) assert(value.trim(), `${locale}: background.${key}`);
+  }
+});

@@ -18,7 +18,7 @@ test('both clock shortcuts also appear below the gallery and open their HTML pag
   const grid = await page.locator('#clock-grid').boundingBox();
   const shortcuts = await links.boundingBox();
   expect(shortcuts!.y).toBeGreaterThanOrEqual(grid!.y + grid!.height);
-  for (const [name, route] of [['独立翻页时钟', 'standalone/flip-minimal.html'], ['原版时钟', 'legacy/fliqlo.html']]) {
+  for (const [name, route] of [['独立翻页时钟', 'standalone/flip-minimal.html'], ['原版时钟', 'standalone/fliqlo.html']]) {
     const popupPromise = page.waitForEvent('popup');
     await links.getByRole('link', { name, exact: true }).click();
     const popup = await popupPromise;

@@ -6,7 +6,7 @@
   },
   {
     "id": "fliqlo", "name": "Aesthetic", "subtitle": "原版时钟 · 多主题", "category": "数字", "style": "aesthetic", "tags": ["多主题", "多语言", "原版"],
-    "description": "你熟悉的原版时钟：多套主题、字体与语言，自定义颜色，12 / 24 小时切换。本页完整保留原始文件，使用在线字体和 Tailwind CDN。",
+    "description": "你熟悉的原版时钟：多套主题、字体与语言，自定义颜色，12 / 24 小时切换。增强副本支持图片和视频背景，原始 HTML 另行完整保留；使用在线字体和 Tailwind CDN。",
     "author": "x · original workspace clock", "license": "原始文件，未单独声明许可", "source": "https://github.com/xalexalice/fliqlo/blob/main/fliqlo.html", "added": "2026-10-09", "featured": 2, "offline": false
   },
   {

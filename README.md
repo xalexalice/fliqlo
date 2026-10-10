@@ -4,12 +4,15 @@
 
 - 在线体验：https://xalexalice.github.io/fliqlo/
 - 独立翻页时钟：https://xalexalice.github.io/fliqlo/standalone/flip-minimal.html
-- 原版时钟：https://xalexalice.github.io/fliqlo/legacy/fliqlo.html
+- 原版时钟（增强入口）：https://xalexalice.github.io/fliqlo/standalone/fliqlo.html
 - 离线下载包：https://github.com/xalexalice/fliqlo/releases/latest
 
 支持分类和搜索、当前浏览器收藏、分享收藏快照、显式导入、单款详情与下载、GitHub Issue 投稿。
 5 款新增时钟的 JavaScript 和 CSS 全部内嵌，下载 HTML 后双击即可在浏览器离线运行。
 原版 `fliqlo.html` 保持字节不变；它依赖 Tailwind CDN 和在线字体，需要联网。
+首页与详情默认打开它的增强副本，增加自定义背景；详情的「原始 HTML」下载与 ZIP 中的 `fliqlo-original.html` 仍是原件。
+全部 6 款时钟提供「背景」按钮，可选择本机图片或浏览器支持的 MP4 / WebM 视频；视频静音循环播放，自动播放被阻止时可手动播放。背景铺满屏幕，保留日期与时钟的对比度，并支持恢复默认背景。
+图片和视频不会上传，也不写入浏览器存储，仅在当前页面使用；刷新或重新打开后需重新选择。下载的 HTML 同样支持选择背景文件。
 全部 6 款时钟支持中文、英语、日语、韩语、法语、德语、西班牙语，以及全屏和空闲 3 秒自动隐藏工具栏。
 新增 5 款时钟的顶部标题也会随工具栏一起隐藏和恢复，隐藏时保留占位，时钟位置不变。
 移动鼠标、触摸或键盘操作可唤回工具栏；新增时钟在键盘操作控件或打开语言菜单时保持工具栏可见。点击全屏按钮或按 `F` 进入、退出全屏。
@@ -64,7 +67,7 @@ GitHub 仓库 **Settings → Pages → Source → GitHub Actions**。
 
 ## 许可
 
-新增画廊代码与 4 款原生时钟按 MIT 发布；Classic Flip 使用 `flipclock@1.0.1`，随独立 HTML 保留其及运行依赖的许可文本。
+新增画廊代码、背景功能与 4 款原生时钟按 MIT 发布；Classic Flip 使用 `flipclock@1.0.1`，随独立 HTML 保留其及运行依赖的许可文本。
 参见 `LICENSE`、`THIRD_PARTY_NOTICES.md` 与构建后的 `standalone/THIRD_PARTY_LICENSES.txt`。
 原始 `fliqlo.html` 和用户提供的 Logo 不重新授权为 MIT。调研对象的代码、字体与背景未被无许可复制。
 

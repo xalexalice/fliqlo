@@ -1,6 +1,7 @@
 import { timeParts } from '../lib/time.mjs';
 import languages from '../data/languages.json';
 import { getLanguage, saveLanguage, isLanguage, LANGUAGE_KEY, type Language } from '../lib/language';
+import { mountBackground } from './clock-background';
 declare const FLIP_CLOCK: boolean;
 
 type Message = 'storageError' | 'fullscreenError' | 'wakeError';
@@ -36,6 +37,7 @@ let flip: { unmount: () => unknown } | undefined;
 let flipFace: { value: { value: string } } | undefined;
 let wakeRequested = false;
 let wakeLock: WakeLockSentinel | undefined;
+const background = mountBackground(document.querySelector<HTMLButtonElement>('#background-open')!, () => language);
 
 function makeDateFormat() { return new Intl.DateTimeFormat(language, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }); }
 function renderControls() {
@@ -57,6 +59,7 @@ function renderControls() {
   wakeButton.textContent = !wakeSupported ? copy.wakeUnavailable : awake ? copy.wakeOn : copy.wakeOff;
   wakeButton.setAttribute('aria-pressed', String(awake));
   status.textContent = message ? copy[message] : '';
+  background.render();
 }
 
 async function mountFlip() {
@@ -118,6 +121,7 @@ function resetIdleTimer() {
   if (document.hidden) return;
   idleTimer = setTimeout(() => {
     // Keep keyboard focus and an open language picker visible.
+    if (document.querySelector<HTMLDialogElement>('#background-dialog')?.open) return;
     if (controls.contains(document.activeElement) && (keyboardInteraction || document.activeElement === languageSelect)) return;
     document.body.classList.add('is-idle');
   }, 3000);

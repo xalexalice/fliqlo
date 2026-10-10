@@ -50,11 +50,15 @@ test('invalid and stale collection links stay safe and show useful messages', as
 test('HTML download preserves the original bytes', async ({ page }) => {
   await page.goto('clocks/fliqlo/');
   const pending = page.waitForEvent('download');
-  await page.getByRole('link', { name: 'HTML', exact: true }).click();
+  await page.getByRole('link', { name: '原始 HTML', exact: true }).click();
   const download = await pending;
   const downloaded = await readFile((await download.path())!);
   const original = await readFile('fliqlo.html');
   expect(createHash('sha256').update(downloaded).digest('hex')).toBe(createHash('sha256').update(original).digest('hex'));
+  const enhancedPending = page.waitForEvent('download');
+  await page.getByRole('link', { name: 'HTML', exact: true }).click();
+  const enhanced = await enhancedPending;
+  expect(await readFile((await enhanced.path())!)).toEqual(await readFile('dist/standalone/fliqlo.html'));
 });
 
 for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
