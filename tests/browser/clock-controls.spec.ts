@@ -64,28 +64,34 @@ for (const id of ['flip-minimal', 'orbit', 'mono', 'dawn', 'terminal']) {
     await page.clock.runFor(3500);
     await expect(page.locator('body')).toHaveClass(/is-idle/);
     await expect(page.locator('#clock-controls')).toHaveCSS('opacity', '0');
+    await expect(page.locator('#clock-name')).toHaveCSS('opacity', '0');
     const clockAfter = await page.locator('#clock').boundingBox();
     expect(clockAfter!.y).toBe(clockBefore!.y);
     expect(clockAfter!.height).toBe(clockBefore!.height);
     expect(clockAfter!.x + clockAfter!.width / 2).toBeCloseTo(clockBefore!.x + clockBefore!.width / 2, 1);
     await page.mouse.move(10, 10);
     await expect(page.locator('body')).not.toHaveClass(/is-idle/);
+    await expect(page.locator('#clock-name')).toHaveCSS('opacity', '1');
     await page.clock.runFor(3500);
     await page.dispatchEvent('body', 'touchstart');
     await expect(page.locator('body')).not.toHaveClass(/is-idle/);
+    await expect(page.locator('#clock-name')).toHaveCSS('opacity', '1');
     await page.clock.runFor(3500);
     await page.keyboard.press('Tab');
     await expect(page.locator('#language')).toBeFocused();
     await page.clock.runFor(4000);
     await expect(page.locator('body')).not.toHaveClass(/is-idle/);
+    await expect(page.locator('#clock-name')).toHaveCSS('opacity', '1');
     await page.locator('#clock').click();
     await page.locator('#fullscreen').click();
     await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(true);
     await page.clock.runFor(3500);
     await expect(page.locator('body')).toHaveClass(/is-idle/);
+    await expect(page.locator('#clock-name')).toHaveCSS('opacity', '0');
     await page.keyboard.press('f');
     await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(false);
     await expect(page.locator('body')).not.toHaveClass(/is-idle/);
+    await expect(page.locator('#clock-name')).toHaveCSS('opacity', '1');
   });
 }
 
