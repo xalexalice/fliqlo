@@ -3,6 +3,36 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import catalogue from '../../src/data/clocks.json' with { type: 'json' };
 
+test('Station red pivot stays at the dial center while hands turn and seconds are hidden offline', async ({ page, context }) => {
+  await context.setOffline(true);
+  await page.clock.install({ time: new Date('2026-10-11T00:00:00+08:00') });
+  await page.clock.pauseAt(new Date('2026-10-11T00:00:01+08:00'));
+  await page.goto(pathToFileURL(resolve('dist/standalone/station.html')).href);
+  const pivot = page.locator('.face-station circle:not(.face-edge)');
+  for (const time of ['00:00:00', '03:15:30', '06:30:45', '09:45:15', '23:59:59']) {
+    await page.clock.setSystemTime(new Date(`2026-10-11T${time}+08:00`));
+    await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+    const dial = (await page.locator('.face-station .face-edge').boundingBox())!;
+    const dot = (await pivot.boundingBox())!;
+    expect(dot.x + dot.width / 2, time).toBeCloseTo(dial.x + dial.width / 2, 3);
+    expect(dot.y + dot.height / 2, time).toBeCloseTo(dial.y + dial.height / 2, 3);
+  }
+  await page.locator('#seconds').click();
+  await expect(page.locator('[data-hand="second"]')).toBeHidden();
+  await expect(pivot).toBeVisible();
+  expect(await pivot.evaluate(dot => getComputedStyle(dot).fill)).toBe('rgb(238, 0, 0)');
+});
+
+test('Station red pivot is centered in both gallery and detail previews', async ({ page }) => {
+  for (const route of ['./', './clocks/station/']) {
+    await page.goto(route);
+    const dial = (await page.locator('.face-station .face-edge').boundingBox())!;
+    const dot = (await page.locator('.face-station circle:not(.face-edge)').boundingBox())!;
+    expect(dot.x + dot.width / 2, route).toBeCloseTo(dial.x + dial.width / 2, 3);
+    expect(dot.y + dot.height / 2, route).toBeCloseTo(dial.y + dial.height / 2, 3);
+  }
+});
+
 test('Station keeps distinct hand lengths and the approved long hour markers', async ({ page, context }) => {
   await context.setOffline(true);
   await page.clock.install({ time: new Date('2026-10-11T12:00:00+08:00') });
@@ -10,11 +40,11 @@ test('Station keeps distinct hand lengths and the approved long hour markers', a
   const proportions = await page.locator('.face-station').evaluate(svg => {
     const hour = svg.querySelector<SVGRectElement>('[data-hand="hour"] rect')!;
     const minute = svg.querySelector<SVGRectElement>('[data-hand="minute"] rect')!;
-    const second = svg.querySelector<SVGCircleElement>('[data-hand="second"] circle')!;
+    const second = svg.querySelector<SVGRectElement>('[data-hand="second"] rect')!;
     const radius = svg.querySelector<SVGCircleElement>('.face-edge')!.r.baseVal.value;
     const major = svg.querySelector<SVGGeometryElement>('.face-major')!.getTotalLength();
     const minor = svg.querySelector<SVGGeometryElement>('.face-tick:not(.face-major)')!.getTotalLength();
-    return { hour: 120 - hour.y.baseVal.value, minute: 120 - minute.y.baseVal.value, second: 120 - second.cy.baseVal.value, radius, major, minor };
+    return { hour: 120 - hour.y.baseVal.value, minute: 120 - minute.y.baseVal.value, second: 120 - second.y.baseVal.value, radius, major, minor };
   });
   expect(proportions.hour / proportions.minute).toBeGreaterThan(0.75);
   expect(proportions.hour / proportions.minute).toBeLessThan(0.82);
@@ -38,10 +68,9 @@ for (const id of catalogue.filter(clock => clock.category === '指针').map(cloc
         const center = new DOMPoint(120, 120).matrixTransform((svg as SVGSVGElement).getScreenCTM()!);
         return ['hour', 'minute', 'second'].map(unit => {
           const hand = svg.querySelector<SVGGraphicsElement>(`[data-hand="${unit}"], #${unit}-hand`)!;
-          const shape = hand.querySelector<SVGGraphicsElement>(unit === 'second' ? 'circle' : 'rect') || hand;
+          const shape = hand.querySelector<SVGGraphicsElement>('rect') || hand;
           const number = (attribute: string) => Number(shape.getAttribute(attribute));
-          const point = shape.tagName === 'rect' ? new DOMPoint(number('x') + number('width') / 2, number('y'))
-            : shape.tagName === 'circle' ? new DOMPoint(number('cx'), number('cy')) : new DOMPoint(number('x2'), number('y2'));
+          const point = shape.tagName === 'rect' ? new DOMPoint(number('x') + number('width') / 2, number('y')) : new DOMPoint(number('x2'), number('y2'));
           const tip = point.matrixTransform(shape.getScreenCTM()!);
           return (Math.atan2(tip.x - center.x, center.y - tip.y) * 180 / Math.PI + 360) % 360;
         });

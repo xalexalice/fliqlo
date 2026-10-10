@@ -11,8 +11,8 @@ function numerals(roman) {
   return labels.map((label, i) => `<text x="${120 + Math.sin(i * Math.PI / 6) * radius}" y="${120 - Math.cos(i * Math.PI / 6) * radius}" text-anchor="middle" dominant-baseline="central" class="face-number">${label}</text>`).join('');
 }
 function hands(id) {
-  // Station keeps the original d3clock SBB proportions, centered on the same pivot.
-  if (id === 'station') return '<g data-hand="hour" transform="rotate(305.25 120 120)"><rect x="113.75" y="47.0833" width="12.5" height="97.5"/></g><g data-hand="minute" transform="rotate(63 120 120)"><rect x="115.3125" y="26.25" width="9.375" height="120"/></g><g data-hand="second" transform="rotate(180 120 120)"><rect x="118.9583" y="47.0833" width="2.0834" height="97.5"/><circle cx="120" cy="47.0833" r="8.3333"/></g>';
+  // Station keeps d3clock hand proportions with a fixed red pivot at the dial center.
+  if (id === 'station') return '<g data-hand="hour" transform="rotate(305.25 120 120)"><rect x="113.75" y="47.0833" width="12.5" height="97.5"/></g><g data-hand="minute" transform="rotate(63 120 120)"><rect x="115.3125" y="26.25" width="9.375" height="120"/></g><g data-hand="second" transform="rotate(180 120 120)"><rect x="118.9583" y="47.0833" width="2.0834" height="97.5"/></g><circle cx="120" cy="120" r="8.3333" class="face-cap"/>';
   return `<line data-hand="hour" transform="rotate(305.25 120 120)" x1="120" y1="120" x2="120" y2="${id === 'neumorphic' ? 74 : 78}" class="face-hour"/><line data-hand="minute" transform="rotate(63 120 120)" x1="120" y1="120" x2="120" y2="${id === 'neumorphic' ? 43 : 45}" class="face-minute"/><line data-hand="second" transform="rotate(180 120 120)" x1="120" y1="${id === 'neumorphic' ? 120 : 135}" x2="120" y2="28" class="face-second"/><circle cx="120" cy="120" r="2.5" class="face-cap"/>`;
 }
 function subdial(cx, cy, label, hand) {
