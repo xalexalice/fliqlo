@@ -45,6 +45,7 @@ test('Nixie mechanical motion runs gently and becomes static with reduced motion
   expect(names).toContain('nixie-steam-rise');
   expect(names).toContain('nixie-gear-turn');
   expect(names).toContain('nixie-pressure');
+  expect(names).toContain('nixie-piston-stroke');
   const first = await page.locator('.nixie-gear').first().evaluate(gear => getComputedStyle(gear).transform);
   await page.waitForTimeout(200);
   expect(await page.locator('.nixie-gear').first().evaluate(gear => getComputedStyle(gear).transform)).not.toBe(first);
