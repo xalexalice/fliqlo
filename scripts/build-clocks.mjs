@@ -25,11 +25,12 @@ for (const dependency of dependencies) {
   if (!license) throw new Error(`Missing license for ${dependency}`);
   notices += `\n--- ${dependency} ---\n${license}\n`;
 }
-await writeFile('public/standalone/THIRD_PARTY_LICENSES.txt', notices);
+await writeFile('public/standalone/THIRD_PARTY_LICENSES.txt', notices.trimEnd() + '\n');
+const ownLicense = await readFile('LICENSE', 'utf8');
 const analog = `<svg viewBox="0 0 240 240" width="100%" aria-hidden="true"><circle cx="120" cy="120" r="106" class="dial-edge"/>${Array.from({ length: 60 }, (_, i) => `<line x1="120" y1="${i % 5 === 0 ? 23 : 27}" x2="120" y2="32" transform="rotate(${i * 6} 120 120)" class="dial-tick ${i % 5 === 0 ? 'dial-major' : ''}"/>`).join('')}<line id="hour-hand" x1="120" y1="120" x2="120" y2="66" class="hand-hour"/><line id="minute-hand" x1="120" y1="120" x2="120" y2="43" class="hand-minute"/><line id="second-hand" x1="120" y1="140" x2="120" y2="35" class="hand-second"/><circle cx="120" cy="120" r="4" fill="#e5ab7b"/></svg>`;
 for (const clock of clocks.filter(clock => clock.offline)) {
   const runtime = runtimes[String(clock.id === 'flip-minimal')];
   const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111714"><title>${clock.name} — Still 时刻</title><meta name="description" content="${clock.description}"><style>${clock.id === 'flip-minimal' ? flipCss : ''}${css}</style></head><body class="clock-${clock.id}" data-clock="${clock.id}"><main class="clock-stage"><h1 class="clock-name">${clock.name.toUpperCase()} / ${clock.subtitle}</h1><div id="clock" class="clock-display" role="img">${clock.id === 'orbit' ? analog : ''}</div><span id="period"></span><div id="date"></div>${clock.id === 'terminal' ? '<div id="timezone"></div>' : ''}<span id="readable-time" class="sr-only"></span></main><p id="status" role="status"></p><div class="clock-toolbar" role="group" aria-label="时钟设置"><button id="format" aria-pressed="true">24 小时</button><button id="seconds" aria-pressed="true">显示秒：开</button><button id="wake" aria-pressed="false">屏幕常亮：关</button><button id="fullscreen">全屏</button></div><noscript>请启用 JavaScript 来运行时钟。</noscript><script>${runtime}</script>${clock.id === 'flip-minimal' ? `<!-- ${notices.replace(/--/g, '—')} -->` : '<!-- Copyright (c) 2026 Still. MIT License. -->'}</body></html>`;
-  await writeFile(`public/standalone/${clock.id}.html`, html);
+  await writeFile(`public/standalone/${clock.id}.html`, html.replace('</body>', `<!-- ${ownLicense.replace(/--/g, '—')} --></body>`));
 }
 console.log(`Built ${clocks.filter(clock => clock.offline).length} offline HTML clocks; original preserved.`);

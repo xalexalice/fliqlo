@@ -18,13 +18,14 @@ let flip: { unmount: () => unknown } | undefined;
 let flipFace: { value: { value: string } } | undefined;
 
 async function mountFlip() {
-  if (!FLIP_CLOCK) return;
+  if (FLIP_CLOCK) {
   const { flipClock, clock, theme, css } = await import('flipclock');
   // The library's default face uses elapsed time. Feed wall-clock time each tick
   // so returning from sleep or changing the system clock never leaves it behind.
   flipFace = clock({ format: seconds ? '[HH]:[mm]:[ss]' : '[HH]:[mm]' });
   flip = flipClock({ parent: display, autoStart: false, face: flipFace as ReturnType<typeof clock>, theme: theme({ dividers: ':', css: css({ fontSize: 'clamp(30px, 9vw, 120px)' }) }) });
   render();
+  }
 }
 
 function render() {
