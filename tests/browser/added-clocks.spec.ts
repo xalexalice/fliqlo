@@ -94,3 +94,16 @@ test('Roman numerals leave a clear gap before the major dial ticks', async ({ pa
     expect(leftNumber!.x - (leftTick!.x + leftTick!.width)).toBeGreaterThan(2);
   }
 });
+
+test('multi-character dial labels advance from left to right', async ({ page, context }) => {
+  await context.setOffline(true);
+  for (const id of ['roman', 'chronograph']) {
+    await page.goto(pathToFileURL(resolve(`dist/standalone/${id}.html`)).href);
+    const advances = await page.locator('.face-number').evaluateAll(labels => labels.flatMap(label => {
+      const text = label as SVGTextContentElement;
+      return Array.from({ length: text.getNumberOfChars() - 1 }, (_, i) => text.getStartPositionOfChar(i + 1).x - text.getStartPositionOfChar(i).x);
+    }));
+    expect(advances.length).toBeGreaterThan(0);
+    expect(advances.every(advance => advance > 2)).toBe(true);
+  }
+});
