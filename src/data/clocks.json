@@ -1,11 +1,11 @@
 [
   {
-    "id": "flip-minimal", "name": "Classic Flip", "subtitle": "经典翻页", "category": "翻页", "style": "flip", "tags": ["极简", "深色", "翻页"],
+    "id": "flip-minimal", "name": "Classic Flip", "subtitle": "独立翻页时钟", "category": "翻页", "style": "flip", "tags": ["极简", "深色", "翻页"],
     "description": "熟悉的机械翻页，安静的深黑背景。把浏览器变成一块专注的桌面时钟。基于 MIT 开源 FlipClock.js，所有脚本已打包进一个 HTML。",
     "author": "Still · powered by Justin Kimbrell", "license": "MIT", "source": "https://github.com/objectivehtml/FlipClock", "added": "2026-10-09", "featured": 1, "offline": true
   },
   {
-    "id": "fliqlo", "name": "Aesthetic", "subtitle": "原版多主题时钟", "category": "数字", "style": "aesthetic", "tags": ["多主题", "多语言", "原版"],
+    "id": "fliqlo", "name": "Aesthetic", "subtitle": "原版时钟 · 多主题", "category": "数字", "style": "aesthetic", "tags": ["多主题", "多语言", "原版"],
     "description": "你熟悉的原版时钟：多套主题、字体与语言，自定义颜色，12 / 24 小时切换。本页完整保留原始文件，使用在线字体和 Tailwind CDN。",
     "author": "x · original workspace clock", "license": "原始文件，未单独声明许可", "source": "https://github.com/xalexalice/fliqlo/blob/main/fliqlo.html", "added": "2026-10-09", "featured": 2, "offline": false
   },
