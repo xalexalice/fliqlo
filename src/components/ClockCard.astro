@@ -5,9 +5,10 @@ import { path, playPath } from '../lib/paths';
 import catalogue from '../data/clocks.json';
 interface Props { clock: typeof catalogue[number]; hidden?: boolean }
 const { clock, hidden = false } = Astro.props;
+const index = String(catalogue.findIndex(item => item.id === clock.id) + 1).padStart(2, '0');
 ---
 <article class="clock-card" data-clock-id={clock.id} hidden={hidden}>
-  <a class="card-preview-link" href={path(`clocks/${clock.id}/`)} aria-label={`查看 ${clock.name} 时钟`} data-i18n-aria-label="card.view" data-i18n-name={clock.name}><ClockPreview style={clock.style} /></a>
+  <a class="card-preview-link" href={path(`clocks/${clock.id}/`)} aria-label={`查看 ${clock.name} 时钟`} data-i18n-aria-label="card.view" data-i18n-name={clock.name}><span class="card-index" aria-hidden="true">{index}</span><ClockPreview style={clock.style} /></a>
   <div class="card-body">
     <div class="card-heading"><div><a href={path(`clocks/${clock.id}/`)} class="card-title">{clock.name}</a><p data-clock-subtitle={clock.id}>{clock.subtitle}</p></div><button class="icon-button favorite-button" data-favorite={clock.id} aria-label={`收藏 ${clock.name}`} aria-pressed="false"><Icon name="heart" /></button></div>
     <div class="card-bottom"><span class="card-tag" data-i18n={`category.${clock.category}`}>{clock.category}</span><span class="card-meta" data-i18n={clock.offline ? 'card.offline' : 'card.original'}>{clock.offline ? '离线可用' : '原版保留'}</span><a class="card-launch" href={playPath(clock.id)} target="_blank" rel="noopener" aria-label={`打开 ${clock.name} 时钟`} data-i18n-aria-label="card.open" data-i18n-name={clock.name}><span data-i18n="card.openLabel">打开</span><Icon name="external" size={14} /></a></div>

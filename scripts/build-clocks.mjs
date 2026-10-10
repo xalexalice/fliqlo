@@ -30,6 +30,7 @@ for (const useFlip of [false, true]) {
 const backgroundCss = await readFile('src/styles/background.css', 'utf8');
 const css = await readFile('src/styles/standalone.css', 'utf8') + backgroundCss;
 const facesCss = await readFile('src/styles/clock-faces.css', 'utf8');
+const refinementCss = await readFile('src/styles/clock-refinement.css', 'utf8');
 const nixieCss = await readFile('src/styles/nixie.css', 'utf8');
 const nixieMarkup = await readFile('src/lib/nixie-markup.html', 'utf8');
 const originalBundle = await build({ entryPoints: ['src/scripts/original-background.ts'], bundle: true, write: false, format: 'iife', platform: 'browser', minify: true, target: 'es2022' });
@@ -58,7 +59,7 @@ for (const clock of clocks.filter(clock => clock.offline)) {
   let clockNotices = clock.id === 'flip-minimal' ? notices : '';
   for (const source of [...clockSources, ...clockFonts]) clockNotices += `\n--- ${source.repository || source.id} ---\n${await readFile(source.license, 'utf8')}\n`;
   const face = clock.id === 'orbit' ? analog : clock.id === 'nixie' ? nixieMarkup : clockFaceMarkup(clock.id);
-  const faceCss = clockSources.length ? facesCss + (clock.id === 'nixie' ? nixieCss : '') + clockFonts.map(font => font.inline).join('') : '';
+  const faceCss = (clockSources.length ? facesCss + (clock.id === 'nixie' ? nixieCss : '') + clockFonts.map(font => font.inline).join('') : '') + refinementCss;
   const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111714"><title>${clock.name} — Still 时刻</title><meta name="description" content="${clock.description}"><style>${clock.id === 'flip-minimal' ? flipCss : ''}${css}${faceCss}</style></head><body class="clock-${clock.id}" data-clock="${clock.id}" data-name="${clock.name}"><main class="clock-stage"><h1 id="clock-name" class="clock-name">${clock.name.toUpperCase()} / ${clock.subtitle}</h1><div id="clock" class="clock-display" role="img">${face}</div><span id="period"></span><div id="date"></div>${clock.id === 'terminal' ? '<div id="timezone"></div>' : ''}<span id="readable-time" class="sr-only"></span></main><footer id="clock-controls" class="clock-controls"><p id="status" role="status"></p><div id="clock-toolbar" class="clock-toolbar" role="group" aria-label="时钟设置"><select id="language" aria-label="语言">${languageOptions}</select><button id="format" aria-pressed="true">24 小时</button><button id="seconds" aria-pressed="true">显示秒：开</button><button id="wake" aria-pressed="false">屏幕常亮：关</button><button id="background-open" type="button">背景</button><button id="fullscreen" aria-pressed="false">全屏</button></div></footer><noscript>请启用 JavaScript 来运行时钟。</noscript><script>${runtime}</script></body></html>`;
   await writeFile(`public/standalone/${clock.id}.html`, html.replace('</body>', `<!-- ${clockNotices.replace(/--/g, '—')}\n${ownLicense.replace(/--/g, '—')} --></body>`));
 }

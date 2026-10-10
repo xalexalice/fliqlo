@@ -48,9 +48,10 @@ export function renderClockFace(display: HTMLElement, id: string, now: Date, par
     return true;
   }
   if (id === 'nixie') {
-    const digits = part.hours + part.minutes + part.seconds + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + String(now.getFullYear()).slice(-2);
+    const digits = part.hours + part.minutes + part.seconds;
     display.querySelectorAll<HTMLElement>('[data-nixie-digit]').forEach(digit => { digit.textContent = digits[Number(digit.dataset.nixieDigit)]; });
     display.querySelector<HTMLElement>('.small-row')!.hidden = !seconds;
+    display.querySelector<HTMLElement>('[data-nixie-seconds]')!.hidden = !seconds;
     return true;
   }
   return false;
